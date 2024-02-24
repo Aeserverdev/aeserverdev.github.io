@@ -1,12 +1,32 @@
-<!DOCTYPE>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Login from</title>
-<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-<script src="custom1.js"></script>
-<link href="style.css" rel="stylesheet" type="text/css" />
-</head>
-<body class="body"> 
+<html>
+    <script language="JavaScript">
+        function Login(){ 
+            var user = document.getElementById("username").value;
+            var pass = document.getElementById("password").value;
+
+            if (user=="admin" && passw=="123"){
+                alert("Selamat anda berhasil login");
+            }else{
+                alert("Username dan password anda salah!");
+            }
+        }
+    </script>
+   
+<body>
+    <form>
+        <table width="225" cellpadding="4">
+            <tr>
+                <td>Username</td>
+                <td><input type="text" id="username"></td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td><input type="text" id="password"></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="right"><input type="button" value="Login" onClick="Login()"></td>
+            </tr>
+        </table>
+    </form>
 </body>
 </html>
