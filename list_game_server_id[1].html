@@ -1,0 +1,596 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+
+  </head>
+
+  <style type="text/css">
+  	* {
+  		font-family: 'Muli', sans-serif;
+  	}
+  	a, a:hover, a:focus {
+  		text-decoration: inherit;
+  		color: inherit;
+  	}
+  	p, h1, h3, h5 {
+  		padding: 0;
+  		margin:0;
+  	}
+  	.header {
+  		background-color: #1976D2;
+  		height: 160px;
+  		border-radius: 0 0 0px 20px;
+  		position: relative;
+  		z-index: 0
+  	}
+  	.name {
+  		margin-top: -5px;
+  		font-weight: bold;
+  		font-size: 20px
+  	}
+  	.hello {
+  		font-size: 15px
+  	}
+  	.img-cs {
+  		position: absolute;
+  		right: 10px;
+  		margin-top: -43px
+  	}
+  	.saldo {
+  		background-color: #fff;
+  		border-radius: 10px;
+  		position: relative;
+  		z-index: 1;
+  		margin-top: 5px;
+  		padding: 10px 0;
+  		box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+
+  	}
+  	.col-8 {
+  		padding: 0;
+  	}
+  	.nm {
+  		padding-right: 0px;
+  		width: 15%
+  	}
+  	#saldo_user {
+  		font-weight: bold;
+  		font-size: 18px;
+  	}
+  	.img-srl {
+	    border-radius: 10px;
+  	}
+  	.ww {
+  		width: 59%
+  	}
+  	.pomem {
+  		font-size: 16px;
+  		margin-top: -2px;
+  		opacity: 0.6
+  	}
+  	.wwcs {
+  		padding-top: 10px;
+  		padding-bottom: 15px
+  	}
+  	.panel {
+  		background-color: #fff;
+  		border-radius: 10px;
+  		box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+  		height: 350px
+
+  	}
+  	/* Style the tab content */
+	.tabcontent {
+	  display: none;
+	  padding-top: 15px;
+	  -webkit-animation: fadeEffect 1s;
+	  animation: fadeEffect 1s;
+	}
+
+	/* Fade in tabs */
+	@-webkit-keyframes fadeEffect {
+	  from {opacity: 0;}
+	  to {opacity: 1;}
+	}
+
+	@keyframes fadeEffect {
+	  from {opacity: 0;}
+	  to {opacity: 1;}
+	}
+  	.tab {
+  		background-color: rgba(66, 165, 245, 0.3);
+  		width: 100%;
+  		border-radius: 15px
+  	}
+  	.tab button {
+  		background-color: transparent;
+  		border: none;
+  		
+  		font-weight: bold;
+  		font-size: 16px;
+  		padding-top: 5px;
+  		padding-bottom: 5px;
+  		flex: 0 0 auto;
+  		width: 25%;
+
+  	}
+
+  	.tab button.active {
+	  background-color: #1976D2;
+	  box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+	  border-radius: 15px;
+	  color: #fff;
+	  -webkit-animation: fadeEffect 1s;
+	  animation: fadeEffect 1s;
+
+	}
+  	.text-panel {
+  		font-size: 15px;
+  		line-height: 15px;
+  		margin-top: 5px
+  	}
+  	.mtz {
+  		margin-top: 20px
+  	}
+  </style>
+
+  <body>
+    <!-- header -->
+    <section class="header">
+    	<!-- nama -->
+    	<div class="container text-light">
+    		<p class="pt-1 hello">Hello,</p>
+    		<p id="nama_user">{{nama_user}}</p>
+    		<img src="https://i.ibb.co/CmSmQJv/customer-support.png" class="img-cs" width="35">
+    	</div>
+    	<!-- saldo -->
+    	<div class="container">
+    		<div class="saldo">
+    			<div class="container">
+    				<div class="row">
+    					<div class="col-3 nm">
+    					<img src="https://i.ibb.co/94xbkjC/20231012-151256.png" width="55" class="img-srl">
+    					</div>
+    					<div class="col-6 ww">
+    						<div class="msy">
+    							<p id="saldo_user">Rp {{saldo_user}}</p>
+    							<p class="pomem">{{status_akun}}</p>
+    						</div>
+    					</div>
+    					<div class="col-3 text-end">
+    					  <!--TOP UP-->
+     <a style=" background-color:#1E90FF;
+	border-radius:100px;
+    margin-left: 0px;
+	cursor:pointer;
+	color:#ffffff;
+    font-size: 13px;
+    font-family: arial;
+	padding:5px;
+    padding-left: 10px;
+    padding-right: 10px;
+	text-decoration:none;
+    box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.2);
+    " href="https://reytapup.webtoko.net/akun/?page=topup"><b>TOP UP</b></a>
+    					</div>
+    				</div>
+    			</div>
+    		</div>
+    	</div>
+
+    	<!-- panel -->
+    	<div class="container mt-3">
+    		<center>
+    			<div class="panel">
+    				<div class="container wwcs">
+    					<div class="tab text-start row">
+							  <button class="tablinks" onclick="openCity(event, 'tab-1')" id="defaultOpen">GAME</button>
+							  <button class="tablinks" onclick="openCity(event, 'tab-2')">VOUCHER</button>
+							  <button class="tablinks" onclick="openCity(event, 'tab-3')">E-WALET</button>
+							  <button class="tablinks" onclick="openCity(event, 'tab-4')">PPOB</button>  
+						</div>
+
+						<!-- tab ke 1 -->
+						<div id="tab-1" class="tabcontent">
+						  <!-- baris 1 -->
+						  <div class="row">
+						  	<div class="col-3">
+						  		<a href="https://reytapup.webtoko.net/digital/245166">
+						  		<img src="https://i.ibb.co/v4X7Yyy/fff.png" width="55" class="img-srl">
+						  		<p class="text-panel"> Free Fire </p>
+						</a>
+						  	</div>
+						  	<div class="col-3">
+						  		<a href="##">
+						  		<img src="https://i.ibb.co/bHRHzm8/download-2.jpg" width="55" class="img-srl">
+						  		<p class="text-panel"> Arena Of Valor </p>
+						</a>
+						  	</div>
+						  	<div class="col-3">
+						  		<a href="https://reytapup.webtoko.net/digital/241196">
+						  		<img src="https://i.ibb.co/gyVwzQ8/pubg.png" width="55" class="img-srl">
+						  		<p class="text-panel"> Pubg Mobile </p>
+						</a>
+						  	</div>
+						  	<div class="col-3">
+						  		<a href="https://reytapup.webtoko.net/digital/241201">
+						  		<img src="https://i.ibb.co/bFnkc7R/20231006-171540.png" width="55" class="img-srl">
+						  		<p class="text-panel"> Hago </p>
+						  		</a>
+						  	</div>
+						  </div>
+						  <!-- baris 2 -->
+						  <div class="row mtz">
+						  	<div class="col-3">
+						  		<a href="https://reytapup.webtoko.net/digital/245402">
+						  		<img src="https://i.ibb.co/17K6b1y/ml.png" width="55" class="img-srl">
+						  		<p class="text-panel"> Mobile legends </p>
+						</a>
+						</div>
+						<div class="col-3">
+						  		<a href="##">
+						  		<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHlEThTH-2CKRI3LyM-7zCQSy4kY1Fh3uoQQ&usqp=CAU" width="55" class="img-srl">
+						  		<p class="text-panel"> Call Of Duty </p>
+						</a>
+						</div>
+						<div class="col-3">
+						  		<a href="">
+						  		<img src="https://i.ibb.co/YPBKm8Y/20231006-171040.jpg" width="55" class="img-srl">
+						  		<p class="text-panel"> Class Of Clans</p>
+						</a>
+						</div>
+						<div class="col-3">
+						  		<a href="##">
+						  		<img src="https://i.ibb.co/F67wS7C/20231006-214837.png" width="55" class="img-srl">
+						  		<p class="text-panel"> Sasuge Man </p>
+						  		</a>
+						  	</div>
+						  </div>
+						<!-- baris 3 -->
+							<div class="row mtz">
+						  	<div class="col-3">
+						  		<a href="##">
+						  		<img src="https://i.ibb.co/gvtKHqf/20231014-104219.jpg" width="55" class="img-srl">
+						  		<p class="text-panel"> Higs Domino</p>
+						</a>
+						</div>
+						<div class="col-3">
+						  		<a href="##">
+						  		<img src="https://i.ibb.co/TMYCSsB/20231014-112934.jpg" width="55" class="img-srl">
+						  		<p class="text-panel"> Lita</p>
+						</a>
+						  	</div>
+						  </div>
+						  <!-- end baris -->
+						</div>
+
+						<!-- tab ke 2 -->
+						<div id="tab-2" class="tabcontent">
+						  <!-- baris 1 -->
+						  <div class="row">
+						  	<div class="col-3">
+						  		<a href="##">
+						  		<img src="https://i.ibb.co/N9MnZQh/20231014-113546.jpg" width="55" class="img-srl">
+						  		<p class="text-panel"> Google Play</p>
+						  		</a>
+						  	</div>
+						  	<div class="col-3">
+						  		<a href="##">
+						  		<img src="https://i.ibb.co/gFw6P3v/20231014-113644.jpg" width="55" class="img-srl">
+						  		<p class="text-panel"> Unipin</p>
+						  		</a>
+						  	</div>
+						
+						
+						  		</a>
+						  	</div>
+						  </div>
+						  <!-- baris 2 -->
+						  
+						  <!-- end baris -->
+						</div>
+
+						<!-- tab ke 3 -->
+							<div id="tab-3" class="tabcontent">
+							<!-- baris 1 -->
+							<div class="row">
+						  	<div class="col-3">
+						  		<a href="https://reytapup.webtoko.net/digital/245103">
+						  		<img src="https://i.ibb.co/DVWgYLq/dana1.png" width="55" class="img-srl">
+						  		<p class="text-panel"> Dana</p>
+						  		</a>
+						  	</div>
+						  	<div class="col-3">
+						  		<a href="https://reytapup.webtoko.net/digital/245110">
+						  		<img src="https://i.ibb.co/Ybz5Tkz/ovo1.png" width="55" class="img-srl">
+						  		<p class="text-panel"> Ovo</p>
+						  		</a>
+						  	</div>
+						  	<div class="col-3">
+						  		<a href="https://reytapup.webtoko.net/digital/245115">
+						  		<img src="https://i.ibb.co/WVDSysH/gopay1.png" class=" img-logo" width="55" class="img-srl">
+						  		<p class="text-panel"> GoPay</p>
+						  		</a>
+						  	</div>
+						  	<div class="col-3">
+						  		<a href="https://reytapup.webtoko.net/digital/245118">
+						  		<img src="https://i.ibb.co/XpXcYZC/shopee1.png" width="55" class="img-srl">
+						  		<p class="text-panel"> Shoope Pay</p>
+						  		</a>
+						  	</div>
+						  </div>
+						<!-- baris 2 -->
+						  
+						  
+						  <!-- end baris -->
+						</div>
+
+						<!-- tab ke 4 -->
+						<div id="tab-4" class="tabcontent">
+						  <div class="row">
+						  	<div class="col-3">
+						  		<a href="https://reytapup.webtoko.net/digital/245297">
+						  		<img src="https://i.ibb.co/D7Hpx8Y/20231111-170832.png" width="55" class="img-srl">
+						  		<p class="text-panel"> Pulsa</p>
+						  		</a>
+						  	</div>
+						<div class="col-3">
+						  		<a href="https://reytapup.webtoko.net/digital/241478">
+						  		<img src="https://i.ibb.co/5chPHqN/20231012-154012.jpg" width="55" class="img-srl">
+						  		<p class="text-panel"> Paket Telpon </p>
+						</a>
+						  	</div>
+						  	<div class="col-3">
+						  	  <a href="https://reytapup.webtoko.net/digital/244785">
+						  	    <img src="https://i.ibb.co/Wfw9txx/20231024-171717.jpg"
+						  	    width="55" class="img-srl">
+						  	    <p class="text-panel"> Paket Data </p>
+						  	    </a>
+						  	</div>
+						  	<div class="col-3">
+						  		<a href="https://reytapup.webtoko.net/digital/241222">
+						  		<img src="https://i.ibb.co/QKfqvYV/20231012-153154.jpg" width="55" class="img-srl">
+						  		<p class="text-panel"> Voucher Listrik </p>
+						  		</a>
+						  	</div>
+						  <!-- end baris -->
+						</div>
+						<!-- end tab -->
+
+    				</div>
+    			</div>
+    		</center>
+    	</div>
+
+
+    </section>
+  
+    <section style="margin-top: 240px">
+	    <div class="mdr-container" style="margin-bottom: 50px;padding-top:0px;
+	    padding-bottom:0px">
+	  	
+	    <script src="https://rawcdn.githack.com/modernplay/hostfile/f1a50044e552a32247eb808f8876abbb6bc12554/jssor.slider-kat.min.js" type="text/javascript"></script>
+	    <script type="text/javascript">
+	        window.jssor_1_slider_init = function(){
+	        var jssor_1_options = {
+	        $AutoPlay: 1,
+	        $SlideWidth: 810,
+	        $SlideHeight: 310,
+	        $SlideSpacing: 20,
+	    };
+	    
+	        var jssor_1_slider = new $JssorSlider$("jssor_1", jssor_1_options);
+	        var MAX_WIDTH = 0;
+	        function ScaleSlider() {
+	        var containerElement = jssor_1_slider.$Elmt.parentNode;
+	        var containerWidth = containerElement.clientWidth;
+	        if (containerWidth) {
+	        var expectedWidth = Math.min(MAX_WIDTH || containerWidth,       containerWidth);jssor_1_slider.$ScaleWidth(expectedWidth);}
+	        else {
+	        window.setTimeout(ScaleSlider, 0);}
+	    }
+	        ScaleSlider();
+	          $Jssor$.$AddEvent(window, "load", ScaleSlider);
+	          $Jssor$.$AddEvent(window, "resize", ScaleSlider);
+	          $Jssor$.$AddEvent(window, "orientationchange", ScaleSlider);
+	            };
+	    </script>
+	    
+	    <style>
+	    	.jssorl-009-spin img {
+	                animation-name: jssorl-009-spin;
+	                animation-duration: 1.6s;
+	                animation-iteration-count: infinite;
+	                animation-timing-function: linear;
+	        }
+	        @keyframes jssorl-009-spin{
+	                from { transform: rotate(0deg);}
+	                to { transform: rotate(300deg);}
+	        } 
+	        .img-slide {
+	          border-radius: 25px;      
+	        }
+	    </style>
+	        
+	    <div id="jssor_1" 
+	    style="
+	      position:relative;
+	      margin:0 auto;'
+	      margin-top:10px;
+	      margin-bottom:-11px;
+	      top:105px;
+	      left:0px;
+	      width:900.1px;
+	      visibility:hidden;">
+	    
+	    
+	    <div data-u="loading" >
+	    
+	    </div>
+	    
+	    <div data-u="slides" style="cursor:default;position:relative;left:0px;width:900px;height:320px;">
+	    <!--GAMBAR SLIDE-->
+	    <div>
+	    <img class="img-slide" data-u="image" src="https://i.ibb.co/F76JPyc/20230925-133852.jpg" />
+		</a>
+		</div>
+	    
+	    <div>
+	    <img class="img-slide" data-u="image" src="https://i.ibb.co/Svtj6Pt/20230925-125219.jpg" />
+		</a>
+		</div>
+	   
+	    <div>
+	    <img class="img-slide" data-u="image" src="https://i.ibb.co/Jj4ZFQB/20230925-131823.jpg" />
+		</a>
+		</div>
+	    
+	    </div>
+	    </div>
+	    <script type="text/javascript">jssor_1_slider_init();
+	    </script>
+	    </div>
+	    <!-- AKHIR SETTINGAN SLIDE -->    
+    </section>
+
+    <style type="text/css">
+    	.texting {
+    		color: rgba(0, 0, 0, 0.6);
+    		font-weight: bold;
+    	}
+
+    	.scroll-menu {
+	        clear:both;
+	        white-space: nowrap;
+	        overflow-x: auto;
+	        padding: 10px 0 10px 0;
+	        border-radius: 0 0 20px 20px
+	    }
+
+	    .scroll-menu::-webkit-scrollbar {
+		  display: none;
+		}
+
+		/* Hide scrollbar for IE, Edge and Firefox */
+		.scroll-menu {
+		  -ms-overflow-style: none;  /* IE and Edge */
+		  scrollbar-width: none;  /* Firefox */
+		}
+	      
+	    .isi-menu {
+	        display: inline-block;
+	        width: 100px;
+	        margin-left: 5px;
+	        margin-right: 5px
+	    }
+	    .bg-menu {
+	    	background-color: #42a5f5;
+	    	padding: 10px;
+	    	border-radius: 5px 25px 5px 5px
+	    }
+	    .hargas {
+	    	font-size: 11px
+	    }
+	    .namas {
+	    	font-size: 10px
+	    }	
+    </style>
+    <section style="margin-bottom: 20px">
+    	<div class="container">
+    	<br>
+    	<br>
+    	<br>
+    	<br>
+    		<h4 class="texting">Promo Khusus Untukmu</h4>
+    	</div>
+
+    	<div class="scroll-menu text-start">
+        <!-- Pulsa -->
+        <div class="isi-menu text-center" style="margin-left: 10px">
+         	<div class="bg-menu text-light">
+         		<img src="https://i.ibb.co/db7Tn7R/dana.png" width="35" class="rounded-circle">
+         		<p class="hargas text-start" style="margin-top: 5px">Dana</p>
+         		<p class="fw-bold namas text-start" style="margin-top: -3px">1.000</p>
+         		<p class="hargas text-start" style="margin-top: -3px">Rp.1.500</p>
+         	</div>
+         </a>
+        </div>
+        <div class="isi-menu text-center">
+         	<div class="bg-menu text-light">
+         		<img src="https://i.ibb.co/db7Tn7R/dana.png" width="35" class="rounded-circle">
+         		<p class="hargas text-start" style="margin-top: 5px">Dana</p>
+         		<p class="fw-bold namas text-start" style="margin-top: -3px">2.000</p>
+         		<p class="hargas text-start" style="margin-top: -3px">Rp.2.500</p>
+         	</div>
+         </a>
+        </div>
+        <div class="isi-menu text-center">
+         	<div class="bg-menu text-light">
+         		<img src="https://i.ibb.co/db7Tn7R/dana.png" width="35" class="rounded-circle">
+         		<p class="hargas text-start" style="margin-top: 5px">Dana</p>
+         		<p class="fw-bold namas text-start" style="margin-top: -3px">3.000</p>
+         		<p class="hargas text-start" style="margin-top: -3px">Rp.3.500</p>
+         	</div>
+         </a>
+        </div>
+        <div class="isi-menu text-center">
+         	<div class="bg-menu text-light">
+         		<img src="https://i.ibb.co/db7Tn7R/dana.png" width="35" class="rounded-circle">
+         		<p class="hargas text-start" style="margin-top: 5px">Dana</p>
+         		<p class="fw-bold namas text-start" style="margin-top: -3px">4.000</p>
+         		<p class="hargas text-start" style="margin-top: -3px">Rp.4.500</p>
+         	</div>
+         </a>
+        </div>
+        <div class="isi-menu text-center">
+         	<div class="bg-menu text-light">
+         		<img src="https://i.ibb.co/db7Tn7R/dana.png" width="35" class="rounded-circle">
+         		<p class="hargas text-start" style="margin-top: 5px">Dana</p>
+         		<p class="fw-bold namas text-start" style="margin-top: -3px">5.000</p>
+         		<p class="hargas text-start" style="margin-top: -3px">Rp.5.500</p>
+         	</div>
+         </a>
+        </div>
+        <!-- End -->
+      </div>
+    	
+    </section>
+
+<!--TEKS BERJALAN-->
+<div class="mybutton">
+<marquee bgcolor='#1E90FF' style='color:white; font-weight:bold;'>IN PAY BUKA JAM 08.00 - 23.00</marquee></center>
+<marquee bgcolor='#FF1176' style='color:white; font-weight:bold;'>JIKA PRODUK GAGAL DI BELI BERARTI GANGGUAN, MOHON DI PERHATIKAN</marquee>
+<!----Sip--->
+
+
+
+
+
+
+    <script>
+		function openCity(evt, cityName) {
+		  var i, tabcontent, tablinks;
+		  tabcontent = document.getElementsByClassName("tabcontent");
+		  for (i = 0; i < tabcontent.length; i++) {
+		    tabcontent[i].style.display = "none";
+		  }
+		  tablinks = document.getElementsByClassName("tablinks");
+		  for (i = 0; i < tablinks.length; i++) {
+		    tablinks[i].className = tablinks[i].className.replace(" active", "");
+		  }
+		  document.getElementById(cityName).style.display = "block";
+		  evt.currentTarget.className += " active";
+		}
+
+		// Get the element with id="defaultOpen" and click on it
+		document.getElementById("defaultOpen").click();
+	</script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  </body>
+</html>
