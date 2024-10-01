@@ -1,410 +1,152 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>ELEKTRONIK</title>
-    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>     
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-       <link rel="stylesheet" href="pulsa.css" type="text/css" media="all" />
-       <script src="https://kit.fontawesome.com/71b0927049.js" crossorigin="anonymous"></script>
-       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-  <style type="text/css" media="all">
-body{
-				margin: 0;padding:0;
-                animation-name: fade;
-                animation-duration: 3s;
-}   
-/* CSS HEADER */
-.loader {
-  border: 16px solid #f3f3f3; /* Light grey */
-  border-top: 16px solid #3498db; /* Blue */
-  border-radius: 50%;
-  width: 120px;
-  height: 120px;
-  animation: spin 2s linear infinite;
-}
+    <title>Bootstrap demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+  </head>
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
+  <!-- CSS -->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2&display=swap');
 
-.act-btn{ 
-            background:#1976d2; 
-            display: block; 
-            width: 90%; 
-            text-align: center; 
-            color: white; 
-            font-size: 14px; 
-            font-weight: bold; 
-            border-radius: 10px; 
-            text-decoration: none; 
-            transition: ease all 0.3s; 
-            position: fixed; 
-            padding: 5px; 
-            right: 5%; 
-            bottom:30px; 
-          } 
-      .act-btn:hover{background: goldenrod; 
-        color:white;} 
-
-        .input-form {
-  display: flex;
-  flex-direction: column-reverse;
-  margin: 1.2em 0;
-}
-
-input, label {
-  transition: 0.4s ease;
-}
-
-label {
-  padding-left:15px;
-  transform: translate(4px, -14px) scale(1.02);
-  margin-bottom: 2px;
-  cursor: text;
-  text-align: center;
-  border-radius:10px;
-  background-color: white;
-  color: #757575;
-  position: absolute;
-}
-
-input {
-  font-size: 1.2em;
-  padding: 10px;
-  border: none;
-  outline: none;
-  border-radius: 10px;
-  border: 1px solid #1976d2;
-}
-
-input::placeholder {
-  opacity: 0;
-}
-
-input:focus, input:not(:placeholder-shown) {
-  border: 1px solid #1976d2;
-}
-
-
-input:not(:placeholder-shown) ~ label, input:focus ~ label {
-  transform: translate(10px, -35px) scale(0.8);
-  padding-left: 0px;
-  color: black;
-}
-.row{text-align: center;
-  background-color: #f5f5f5;
-  margin-top: -20px;
-  padding: 10px;
-  border-radius: 10px;
-  font-size: 13px;
-  font-weight: bold;
-}
-.box-info{
-  background-color: #1976d2;
-  padding: 10px;
-  border-radius: 10px;
-  color: white;
-  font-size: 12px;
-  margin-top: 10px;
-}
-.box-info h{
-  text-align: center;
-  font-weight: bold;
-}
-.box-produk{
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  margin-top:10px;
-  padding:10px;
-  border-radius:10px;
-}
-.box-produk img{
-  width:30px;
-  float:left;
-  margin-top:3px;
-  margin-right:10px;
-}
-.box-produk h4{
-  font-size:15px;
-  margin-top:10px;
-}
-.box-produk button{
-  float:right;
-  border:none;
-  background-color: #1976d2;
-  font-size: 12px;
-  font-weight: bold;
-  color: white;
-  border-radius: 10px;
-  margin-top: -28px;
-}
-.pilihan-produk{
-  margin-top:10px;
-  font-size: 15px;
-  font-weight: bold;
-  color: black;
-  opacity: 0.7;
-}
-.pilihdong{
-    background-color: #fff;
-    color: #1976d2;
-    width:90px;
-    border-radius: 5px;
-    border:1px solid #1976d2;
-    position:flex;
-    z-index: 10;
-}
-.xx{
-    margin-top:10px;
-    background:transparent;
-}
-.x1{
-    text-align:left;
-}
-.x2{
-    text-align:right;
-    
-}
-.tablink{
-    border: none;
-    background-color: transparent;
-    width:100%;
-    text-align:left;
-}
-.tablink img{
-    width:20px;
-    margin-right:10px;
-    margin-top: -4px;
-}
-.tabcontent{
-    animation-name: fade;
-  animation-duration: 3s;
-}
-@keyframes fade {
-  from {opacity: .4} 
-  to {opacity: 1}
-}
-@keyframes aniload {
-  from {
-    transform: translateX(50px, 0px)
-  }
-  to {
-    transform: translateX(0px, 0px)
-  }
-}
-
-.judul-tab{
-    border-left: 3px solid #1976d2;
-    padding-left: 5px;
-    font-size:14px;
-    border-radius:5px;
-    margin-top: -35px;
-    background-color:transparent;
-    width:auto;
-}
-.judul-tab img{
-  width:30px;
-  border-radius:40px;
-  margin-right:10px;
-}
-.tanya{
-    float:right;
-    border:none;
-    background-color:red;
-   margin-left:5px;
-   border-radius:50px;
-   width:25px;
-   color:white;
-}
-.modal-concent{
-    background-color:#1976d2;
-}
-.tutup{
-    border:none;
-    background-color:red;
-    color:white;
-    border-radius:10px;
-    font-size:11px;
-}
-.infomu{
-    font-size: 12px;
-}
-
-       </style>  
-    <body>
-      <div class="container">
-<div class="container">
-  <form>
-    <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-body">
-          <p class="infomu">Tulis informasi disini ges yak</p>
-          <center><button class="tutup" data-bs-dismiss="modal" aria-label="Close">Tutup</button> </center>
-        </div>
-      </div>
-    </div>
-  </div>
-    <div class="container">
-      <div class="row">
-        <div class="col"style="font-size:10px;">
-          <img src="https://codingasik.my.id/iconwarna/cantact.png" alt="" style="width: 15px;font-size:12px;"> Kontak
-        </div>
-        <div class="col" style="font-size:10px;">
-          <img src="https://codingasik.my.id/iconwarna/favorit.png" alt="" style="width: 15px;font-size:12px;"> Favorite
-        </div>
-        <div class="col"data-bs-toggle="modal" data-bs-target="#exampleModal"style="font-size:10px;">
-          <img src="https://codingasik.my.id/iconwarna/star.png" alt="" style="width: 15px;"> informasi
-        </div>
-      </div>
-    </div>
-  </div>
-
-    <div class="container">
-<div class="box-info">
-  <center>
-  <h>Cara Pembelian & Pembayaran : </h>
-</center>
-  <p>
-    <li>Pilih salah satu produk</li>
-    <li>Pilih nominal</li>
-    <li>Kamu akan diarahkan ke pembayaran</li>
-</div>
-</div>
-
-
-    <div class="row xx">
-      <div class="col x1">
-      </div>
-      <div class="col x2">
-      </div>
-    </div>
-  </div>
-  <br>
-  <!-- Gopay -->
-  <section id="menu-3" class="tabcontent">
-      <div class="container">
-        <p class="judul-tab"><img src="https://i.ibb.co.com/SrcsbZ5/OIP-1.jpg?resize=219%2C219" alt="">Beli kipas angin</p>
-      
-       <div class="box-produk">
-        <img src="https://i.ibb.co.com/SrcsbZ5/OIP-1.jpg?resize=219%2C219" alt="">
-        <h4>Kipas angin 21.000</h4>
-	       <a href="pembayaran.html">
-        <button>Rp.21.000</button>
-	       </a>
-       </div>
-      
-     
-    </div>
-    </section>
-<br>
-<script>
-    function openPage(pageName,elmnt,color) {
-      var i, tabcontent, tablinks;
-      tabcontent = document.getElementsByClassName("tabcontent");
-      for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-      }
-      tablinks = document.getElementsByClassName("tablink");
-      for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].style.backgroundColor = "";
-      }
-      document.getElementById(pageName).style.display = "block";
-      elmnt.style.backgroundColor = white;
+    * {
+      font-family: 'verdana'
     }
-    
-    // Get the element with id="defaultOpen" and click on it
-    document.getElementById("defaultOpen").click();
-    </script>
-<script>
-// bersihkan konten alert saat diklik oleh user
-function clearData(e) {
-  document.getElementById('alertWarning').style.display = "none";
-}
 
-// SIMPAN SEMUA HASIL CETAKAN DARI SEMUA FUNCTION KESINI
-// CETAK NAMA BARANG
- let cetakNama = document.getElementById("beliPulsa");
- // CETAK HARGA BARANG
- let cetakHarga = document.getElementById("HargaBarang");
-// CETAK URL BARANG
-let url = document.getElementById("linkUrl");
-// CETAK NOMOR TUJUAN
- let nomorTujuan = document.getElementById("noTujuan");
- let nomorInputan = document.getElementById("nomor");
- 
- // TOTAL PEMBAYARAN USER
- let totalTagihan = document.getElementById("totalTagihan");
- 
- // CETAK OPERATOR PULSA
- let cetak_operator = document.getElementById("cetakOperator");
-   
- // cetak produk yang  manapun dan keluarkan hanya produk yang diklik oleh user dan ambil semua data dari html
- 
- // ############# KALAU KAMU PAKAI HOSTING GK PERLU LAKUKAN INI, CUKUP BIKIN CLASS UNTUK QUERY DATABASE KAMU #############
- 
- // cara ini hanya untuk natif atau untuk bukaolshop
-function cetak_data() {
-   nama = document.getElementById("nama_barang").innerHTML;
-   harga = document.getElementById("harga_barang").innerHTML;
-   url_barang = document.getElementById("url_barang").href;
-   let nomorInputan = document.getElementById("nomor").value.replace(/\s+/g, '');
-   let operator =document.getElementById("operatorPulsa").innerHTML;
-   
-   // jika nomor tidak terdeteksi kasih hasil respon kosong disemua data
-   if (nomorInputan == []|| nomorInputan== null || nomorInputan == 08) {
-     nomorTujuan.innerHTML = none;
-   }
-   cetakNama.innerHTML = nama;
-   cetakHarga.innerHTML = harga;
-   totalTagihan.innerHTML = harga;
-   url = url_barang;
-   nomorTujuan.innerHTML = nomorInputan;
-   cetakOperator.innerHTML = operator;
-}
+    p {
+      padding: 0;
+      margin: 0;
+    }
 
-function alertInfoNews(){
-  let a = document.getElementById("nomor").value;
-  let textAlertInfo = "Masukkan Nomor Telepon 10-13 karakter";
-  let kontenAlert = document.getElementById('kontenAlertInformation');
-  if(a == 0 || a == [] || a == null || a == " " || a == ""){
-  kontenAlert.style.display = "none";
-  
-}else if(a.length < 5){
-  kontenAlert.innerHTML = textAlertInfo;
-  kontenAlert.style = "color:red;";
-}else if(a > 5){
-  kontenAlert.style.display = "none";
-}
-}
-// SEBELUM KIRIM DATA NOMOR TUJUAN PERIKSA DAN HILANGKAN SEMUA SIMBOL SIMBOL DAN HURUF, CETAK HANYA ANGKA SAJA DAN BERIKAN SPASI DI INPUTAN
-// hasil inputan tidak boleh lebih dari 13 karakter
-document.getElementById('nomor').addEventListener('input', function (e) {
- e.target.value = e.target.value.replace(/[^0-9]/g,'').substring(0, 18).trim();
-});
+    a, a:focus, a:hover {
+        color: inherit;
+        text-decoration: inherit;
+    }
 
- 
- //buat fungsi untuk kirim produk yg dipilih user ke bukaolshop
- function kirimData(urlLink) {
-   // masukkan catatan parameter dari bukaolshop
-   const catatan = "?catatan=";
-  // ambil nomor dari hasil inputan user dan hilangkan semua karakter selain ANGKA
-  const nomor = document.getElementById('nomor').value;
-  // sebelum mengirimkan data 
-  //periksa dulu apakah nomor tujuan sudah di isi
-  //periksa juga produk user dan periksa harga produk
-  if (nomor == null || nomor == "0858" || nomor.length < 5 || nomor == "" || nomor == "0" || nomor == "none") {
-    // jika nomor kosong jangan kirimkan data nomor harus lebih dari 10 karakter dan beri peringatan ke user
-    swal({ title: "Nomor tidak Lengkap", text: "Periksa Kembali Nomor Tujuan", icon: "error", button: true });
-  }else{
-  // jika nomor ada isinya dan isinya lebih dari 10 karakter kirimkan data ke bukaolshop
-  window.location.href=urlLink+catatan+nomor;
- }}
-    </script>
-<script type="text/javascript"> function contoh() { swal({ title: "Denom 5.000", text: "Masa Akses Berlaku Sesuai Zona : (Sumatra,Jawa & Balinusa 6Jam) (Kalimantan & Sulawesi 4Jam) (Maluku & Papua 2Jam)", icon: "info", button: true }); } </script> 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    .headers {
+      background-color: #42a5f5;
+      height: 85px;
+    }
+
+    .judul {
+      font-size: 25px;
+      color: #fff;
+    }
+
+    .boxing {
+      width: 90%;
+      background-color: #42a5f5;
+      box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 10px
+    }
+
+    .inputs {
+      background-color: #fff;
+      border: none;
+      padding: 5px;
+      border-radius: 5px;
+      width: 315px;
+      font-family: 'verdana';
+      font-size: 15px
+    }
+
+    .imgs {
+      position: absolute;
+      width: 18px;
+      margin-left: -26px;
+      margin-top: 8px
+    }
+
+    .isian {
+        margin-top: 10px
+      }
+
+      ul {
+       list-style-type: none;
+       padding: 0px
+      }
+      .list-produk {
+        border-bottom: 1px solid rgba(234,234,234,0.85);
+        width: 94%;
+        padding: 20px;
+        padding-bottom: 10px
+      }
+      .img-logo {
+        width: 40px;
+        height: 40px;
+        margin-top: -5px;
+      }
+      .nama-list {
+        font-size: 18px;
+        margin-left: 10px
+      }
+      .isian {
+        margin-top: 35px
+      }
+
+  </style>
+  <!-- Tutup CSS -->
+
+  <body>
+
+    <!-- Atas -->
+    <section class="headers">
+      <center>
+        <div class="container">
+          <p class="judul text-start pt-2">Elektronik</p>
+        </div>
+        <div class="boxing">
+          <input type="text" placeholder="Cari Elektronik" id="cariKat" onkeyup="prosesMenu()" class="inputs">
+        </div>
+      </center>
+    </section>
+    <!-- Tutup Atas -->
+
+    <!-- Isian -->
+    <section class="isian">
+      <center>
+        <ul id="daftarKategori">
+          <!-- Telkomsel -->
+          <li class="list-produk text-start">
+            <a href="pembayaran.html">
+            <img src="https://i.ibb.co.com/NtVDhhN/20241001-082849.png?resize=219%2C219" class=" img-logo"> 
+            <span class="nama-list">𝗞𝗶𝗽𝗮𝘀 𝗮𝗻𝗴𝗶𝗻 Rp 21.000</span>
+            </a>
+          </li>
+          
+          <!-- End -->
+        </ul>
+      </center>
+    </section>
+    <!-- Tutup Isian -->
+
+
+    <!-- Jangan Di Ubah -->
+    <script type="text/javascript">
+        function prosesMenu()
+        {
+          var input = document.getElementById("cariKat");
+          var filter = input.value.toLowerCase();
+          var ul = document.getElementById("daftarKategori");
+          var li = document.querySelectorAll("li")
+          console.log(li)
+          for(var i = 0; i<li.length; i++){
+            var ahref = document.querySelectorAll("a")[i];
+            if(ahref.innerHTML.toLowerCase().indexOf(filter) > -1){
+              li[i].style.display = "";
+            }else{
+              li[i].style.display = "none";
+            }
+          }
+        }
+    </script> 
+    <!-- Tutup -->
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+  </body>
+</html>
