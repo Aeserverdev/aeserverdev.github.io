@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Keranjang - Kopi Kenangan Senja</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f7f7f7;
+    }
+
+    header {
+      padding: 15px 20px;
+      border-bottom: 1px solid #ddd;
+      font-style: italic;
+      font-weight: bold;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #fff;
+      border: 1px solid #ccc;
+    }
+
+    .cart-item {
+      display: flex;
+      border: 1px solid #ddd;
+      margin-bottom: 15px;
+      padding: 10px;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .cart-item img {
+      width: 100px;
+      height: 100px;
+      background: #ddd;
+      display: block;
+      object-fit: cover;
+    }
+
+    .checkbox {
+      width: 20px;
+      height: 20px;
+    }
+
+    .item-info {
+      flex: 1;
+    }
+
+    .item-info input[type="text"] {
+      font-size: 16px;
+      padding: 5px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .harga {
+      margin: 10px 0;
+    }
+
+    .quantity-control {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .quantity-control button {
+      padding: 5px 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .quantity-control span {
+      color: #f15a29;
+    }
+
+    .bottom-section {
+      border-top: 2px solid #ccc;
+      margin-top: 20px;
+      padding-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .voucher {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-style: italic;
+    }
+
+    .summary {
+      text-align: right;
+      margin-top: 10px;
+    }
+
+    .summary p {
+      margin: 5px 0;
+    }
+
+    .order-button {
+      margin-top: 10px;
+    }
+
+    .order-button button {
+      padding: 10px 30px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .back-button {
+      font-size: 20px;
+      text-decoration: none;
+      color: black;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+
+    .back-button:hover {
+      text-decoration: underline;
+    }
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="home.html" class="back-button">&larr;</a> keranjang
+  </header>
+
+  <div class="container">
+
+    <!-- Item 1 -->
+    <div class="cart-item">
+      <input type="checkbox" class="checkbox">
+      <img src="images/americano.jpg" alt="americano">
+      <div class="item-info">
+        <input type="text" value="americano">
+        <div class="harga">harga</div>
+        <div class="quantity-control">
+          <button>-</button>
+          <span>jumlah</span>
+          <button>+</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Item 2 -->
+    <div class="cart-item">
+      <input type="checkbox" class="checkbox">
+      <img src="images/capucino.jpg" alt="cappuccino">
+      <div class="item-info">
+        <input type="text" value="cappuccino">
+        <div class="harga">harga</div>
+        <div class="quantity-control">
+          <button>-</button>
+          <span>jumlah</span>
+          <button>+</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Item 3 -->
+    <div class="cart-item">
+      <input type="checkbox" class="checkbox">
+      <img src="images/espresso.jpg" alt="espresso">
+      <div class="item-info">
+        <input type="text" value="espresso">
+        <div class="harga">harga</div>
+        <div class="quantity-control">
+          <button>-</button>
+          <span>jumlah</span>
+          <button>+</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom section -->
+    <div class="bottom-section">
+      <div class="voucher">
+        <input type="checkbox" id="voucher">
+        <label for="voucher"><em>voucher</em></label>
+        <input type="checkbox" id="semua">
+        <label for="semua">semua</label>
+      </div>
+      <div class="summary">
+        <p><strong>Total Rp 75.000,00</strong></p>
+        <p>hemat Rp 500,00</p>
+        <div class="order-button">
+            <a href="pesan.html">
+          <button>pesan</button></a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</body>
+</html>

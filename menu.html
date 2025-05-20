@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kopi Kenangan Senja - Menu</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background: #fff;
+      border-bottom: 1px solid #ccc;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+    }
+    header .logo {
+      color: #f15a29;
+      font-weight: bold;
+      font-style: italic;
+      font-size: 20px;
+    }
+    nav a {
+      text-decoration: none;
+      margin: 0 15px;
+      font-size: 18px;
+      color: #f15a29;
+    }
+    nav a.active {
+      font-weight: bold;
+      color: black;
+    }
+    .cart-icon {
+      font-size: 22px;
+    }
+    .container {
+      padding: 40px 20px;
+      text-align: center;
+    }
+    .container h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+    .container p {
+      color: #555;
+      margin-bottom: 40px;
+    }
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .menu-card {
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 5px;
+      text-align: center;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.05);
+    }
+    .menu-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      background: #eee;
+    }
+    .menu-card h3 {
+      text-transform: capitalize;
+      margin: 10px 0 5px;
+    }
+    .menu-card p {
+      margin: 0;
+      font-size: 14px;
+    }
+    .rating {
+      margin-top: 5px;
+      color: #000;
+      font-weight: bold;
+    }
+    .star {
+      color: gold;
+    }
+    .buy-button {
+      display: inline-block;
+      margin-top: 10px;
+      background-color: #f15a29;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s;
+    }
+    .buy-button:hover {
+      background-color: #c9481f;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">kopi kenangan senja</div>
+  <nav>
+    <a href="home.html">home</a>
+    <a href="menu.html" class="active">menu</a>
+    <a href="kontak.html">kontak</a>
+    <a href="about1.html">about</a>
+  </nav>
+  <a href="keranjang.html" div class="cart-icon">🛒</a></div>
+</header>
+
+<div class="container">
+  <h1>menu kopi</h1>
+  <p>Silahkan pilih kopi favorit di bawah, habis itu langsung beli.</p>
+  
+  <div class="menu-grid">
+    <!-- Item Kopi -->
+    <div class="menu-card">
+      <img src="images/capucino.jpg" alt="cappuccino">
+      <h3>cappuccino</h3>
+      <p>Rp 15.000</p>
+      <div class="rating"><span class="star">★</span> 4,8</div>
+      <a href="pesan.html" button class="buy-button">Beli</a></button>
+    </div>
+
+    <div class="menu-card">
+      <img src="images/latte.jpg" alt="latte">
+      <h3>latte</h3>
+      <p>Rp 17.000</p>
+      <div class="rating"><span class="star">★</span> 4,8</div>
+      <a href="pesan.html" button class="buy-button">Beli</a></button>
+    </div>
+
+    <div class="menu-card">
+      <img src="images/americano.jpg" alt="americano">
+      <h3>americano</h3>
+      <p>Rp 13.000</p>
+      <div class="rating"><span class="star">★</span> 4,8</div>
+      <a href="pesan.html" button class="buy-button">Beli</a></button>
+    </div>
+
+    <div class="menu-card">
+      <img src="images/espresso.jpg" alt="espresso">
+      <h3>espresso</h3>
+      <p>Rp 12.000</p>
+      <div class="rating"><span class="star">★</span> 4,8</div>
+      <a href="pesan.html" button class="buy-button">Beli</a></button>
+    </div>
+
+    <div class="menu-card">
+      <img src="images/doppio.jpg" alt="doppio">
+      <h3>doppio</h3>
+      <p>Rp 18.000</p>
+      <div class="rating"><span class="star">★</span> 4,8</div>
+      <a href="pesan.html" button class="buy-button">Beli</a></button>
+    </div>
+
+    <div class="menu-card">
+      <img src="images/predo.jpg" alt="fredo">
+      <h3>fredo</h3>
+      <p>Rp 14.000</p>
+      <div class="rating"><span class="star">★</span> 4,8</div>
+      <a href="pesan.html" button class="buy-button">Beli</a></button>
+    </div>
+
+    <div class="menu-card">
+      <img src="images/mocha.jpg" alt="mocha">
+      <h3>mocha</h3>
+      <p>Rp 16.000</p>
+      <div class="rating"><span class="star">★</span> 4,8</div>
+      <a href="pesan.html" button class="buy-button">Beli</a></button>
+    </div>
+
+    <div class="menu-card">
+      <img src="images/frappe.jpg" alt="frappe">
+      <h3>frappe</h3>
+      <p>Rp 19.000</p>
+      <div class="rating"><span class="star">★</span> 4,8</div>
+      <a href="pesan.html" button class="buy-button">Beli</a></button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

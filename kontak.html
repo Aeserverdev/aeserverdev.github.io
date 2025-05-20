@@ -1,0 +1,68 @@
+<style>
+    header {
+  background: #fff;
+  border-bottom: 1px solid #ccc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+}
+header .logo {
+  color: #f15a29;
+  font-weight: bold;
+  font-style: italic;
+  font-size: 20px;
+}
+nav a {
+  text-decoration: none;
+  margin: 0 15px;
+  font-size: 18px;
+  color: #f15a29;
+}
+nav a.active {
+  font-weight: bold;
+  color: black;
+}
+</style>
+<header>
+  <div class="logo">kopi kenangan senja</div>
+  <nav>
+    <a href="home.html">home</a>
+    <a href="menu.html">menu</a>
+    <a href="kontak.html" class="active">kontak</a>
+    <a href="about1.html">about</a>
+  </nav>
+  <a href="keranjang.html" div class="cart-icon">🛒</a></div>
+</header>
+
+<section id="kontak" style="background-color: #f8f8f8; padding: 40px 20px; font-family: Arial, sans-serif;">
+  <div style="max-width: 800px; margin: auto;">
+    <h2 style="text-align: center; color: #e76f51; margin-bottom: 30px;">Hubungi Kami</h2>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+      <!-- Form Kontak -->
+      <form style="flex: 1; min-width: 300px;">
+        <label for="nama">Nama:</label><br>
+        <input type="text" id="nama" name="nama" style="width: 100%; padding: 10px; margin-bottom: 10px;"><br>
+
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" style="width: 100%; padding: 10px; margin-bottom: 10px;"><br>
+
+        <label for="pesan">Pesan:</label><br>
+        <textarea id="pesan" name="pesan" rows="5" style="width: 100%; padding: 10px; margin-bottom: 10px;"></textarea><br>
+
+        <button type="submit" style="background-color: #e76f51; color: white; border: none; padding: 10px 20px; cursor: pointer;">
+          Kirim
+        </button>
+      </form>
+      <!-- Info Kontak -->
+      <div style="flex: 1; min-width: 300px;">
+        <h3>Informasi Kontak</h3>
+        <p><strong>Alamat:</strong><br>Jl. Kopi No. 123, Bangko</p>
+        <p><strong>Email:</strong><br><a href="mailto:info@kopisenja.com">info@kopisenja.com</a></p>
+        <p><strong>Telepon:</strong><br>+62 812-3456-7890</p>
+        <p><strong>Jam Operasional:</strong><br>Senin - Sabtu, 08:00 - 20:00</p>
+      </div>
+    </div>
+  </div>
+</section>
