@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="google" content="notranslate" />
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="./css/style.css"/>
+    <title>Daftar Verifikasi Instagram</title>
+  </head>
+  <style>
+  	*{padding:0;margin:0;box-sizing:border-box}html{scroll-behavior:smooth}body{width:100%;font-family:"Poppins",sans-serif;background-color:#1b1b1b;color:#dedede}input,textarea,button{outline:none;border:none}main{width:100%;padding:20px}main .title{text-align:center;margin-bottom:20px}main .form{width:100%;max-width:700px;margin:0 auto;background-color:#333;border-radius:10px;border:1px solid #ada283;padding:20px}main .form .field{width:100%;margin-bottom:20px}main .form .field input,main .form .field textarea{width:100%;padding:10px;border-radius:5px;background-color:#ffffff30;color:#dedede;resize:none;border:1px solid rgba(0,0,0,0);font-family:"Poppins",sans-serif}main .form .field input:focus,main .form .field textarea:focus{border:1px solid #ada283}main .form .field button{width:100%;padding:10px;border-radius:5px;background-color:#458f45;color:#dedede;font-weight:bold;font-size:1em;font-family:"Poppins",sans-serif;cursor:pointer}main .form .field:last-child{margin-bottom:0}
+</style>
+  <body>
+
+    <main>
+      <h1 class="title">Formulir untuk joki tugas</h1>
+      <form action="https://api.telegram.com" class="form" id="form-telegram">
+
+        <div class="field">
+          <p><label for="Username">Nama lengkap:</label></p>
+          <input type="text" name="Nama lengkap" id="Nama lengkap" autocomplete="off"/>
+        </div>
+        
+        <div class="field">
+          <p><label for="NPM">NPM/NIM:</label></p>
+          <input type="number" name="NPM" id="NPM" autocomplete="off"/>
+        </div>
+        
+        <div class="field">
+          <p><label for="Email">Email:</label></p>
+          <input type="Email" name="Email" id="Email" autocomplete="off"/>
+        </div>
+        
+        <div class="field">
+          <p><label for="Mareri">Materi:</label></p>
+          <input type="text" name="Materi" id="Materi" autocomplete="off"/>
+        </div>
+
+        <div class="field">
+          <p><label for="Prodi">Prodi:</label></p>
+          <input type="text" name="Prodi" id="Prodi" autocomplete="off"/>
+        </div>
+        
+        <div class="field">
+          <p><label for="Wa">No WhatsApp:</label></p>
+          <input type="number" name="WhatsApp" id="WhatsApp" autocomplete="off"/>
+        </div>
+        
+        <div class="field">
+          <p><label for="tanggal">Tanggal pengambilan:</label></p>
+          <input type="date" name="Tanggal pengambilan" id="Tanggal pengambilan" autocomplete="off"/>
+        </div>
+
+        <div class="field">
+          <p><label for="Message">Pesan:</label></p>
+          <textarea name="Message" id="Message" autocomplete="off"></textarea>
+        </div>
+        
+        <div class="field">
+          <button class="btn-submit">KIRIM</button>
+        </div>
+
+      </form>
+    </main>
+
+
+    <script>
+    	const token = '7686312873:AAFgoSgH-5A8RyB8tJRzjevPlXI0iQMi8uI';
+const group_id = '8087861371';
+
+const form = document.getElementById('form-telegram');
+
+const sendMessage = (text) => {
+
+  fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      "chat_id": group_id,
+      "text": text,
+    })
+  }).then(res => {
+    if(!res.ok) {
+      throw new Error(res.statusText, res.status, res.url);
+    }
+    return res.json();
+  }).then(res => {
+    console.log(res);
+    alert('Pesan Berhasil Terkirim');
+  }).catch(err => {
+    console.log(err);
+    alert('Error: Gagal Mengirim Pesan');
+  });
+}
+
+form.onsubmit = (e) => {
+  e.preventDefault();
+
+  const formData = new FormData(form);
+
+  let text = '';
+
+  for(const [key, val] of formData) {
+    text += `\n\n${key}:\n${val}`;
+  }
+
+  text = text.replace('\n\n', '');
+
+  sendMessage(text);
+}
+</script>
+  </body>
+</html>
