@@ -1,3 +1,4 @@
+<!-- Salin dan gunakan ini sebagai versi final -->
 <!DOCTYPE html>
 <html lang="id" data-theme="light">
 <head>
@@ -130,7 +131,7 @@
       </label>
 
       <label>NPM
-        <input name="NPM" required>
+        <input name="NPM" required pattern="^\d{5,20}$" placeholder="Contoh: 22210012">
       </label>
 
       <label>Program Studi
@@ -151,7 +152,7 @@
       </label>
 
       <label>WhatsApp
-        <input name="WhatsApp" required>
+        <input name="WhatsApp" required placeholder="Contoh: 08xxxxxxxxxx" pattern="^08\d{8,11}$">
       </label>
 
       <label>Jenis Tugas
@@ -186,12 +187,12 @@
       </label>
       <p id="timer"></p>
 
-      <label>Bukti Pembayaran
-        <input type="file" id="bukti-input" name="Bukti" accept="image/*">
+      <label>Bukti Pembayaran (wajib)
+        <input type="file" id="bukti-input" name="Bukti" accept="image/*" required>
         <img id="preview-img">
       </label>
 
-      <button type="submit">Kirim</button>
+      <button type="submit" id="submitBtn">Kirim</button>
       <button type="button" onclick="generatePDF()">Export PDF</button>
     </form>
 
@@ -227,10 +228,10 @@
           output.textContent = "🔹 Nomor DANA: 0813-4872-2325";
           break;
         case "OVO":
-          output.textContent = "🔸 Nomor OVO: 08xx-xxxx-xxxx";
+          output.textContent = "🔸 Nomor OVO: 0812-3456-7890";
           break;
         case "Gopay":
-          output.textContent = "🟢 Nomor Gopay: 08xx-xxxx-xxxx";
+          output.textContent = "🟢 Nomor Gopay: 0819-1234-5678";
           break;
         default:
           output.textContent = "";
@@ -239,22 +240,33 @@
 
     document.getElementById("bukti-input").addEventListener("change", e => {
       const file = e.target.files[0];
-      if (file && file.size <= 2 * 1024 * 1024 && file.type.startsWith("image/")) {
-        const reader = new FileReader();
-        reader.onload = ev => {
-          document.getElementById("preview-img").src = ev.target.result;
-          document.getElementById("preview-img").style.display = "block";
-        };
-        reader.readAsDataURL(file);
-      } else {
+      if (!file) return;
+      if (file.size > 2 * 1024 * 1024 || !file.type.startsWith("image/")) {
+        Swal.fire("Bukti tidak valid", "Gunakan gambar (maks 2MB)", "error");
+        e.target.value = "";
         document.getElementById("preview-img").style.display = "none";
+        return;
       }
+
+      const reader = new FileReader();
+      reader.onload = ev => {
+        document.getElementById("preview-img").src = ev.target.result;
+        document.getElementById("preview-img").style.display = "block";
+      };
+      reader.readAsDataURL(file);
     });
 
     function toggleDark() {
       const html = document.documentElement;
-      html.dataset.theme = html.dataset.theme === "dark" ? "light" : "dark";
+      const newTheme = html.dataset.theme === "dark" ? "light" : "dark";
+      html.dataset.theme = newTheme;
+      localStorage.setItem("theme", newTheme);
     }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const saved = localStorage.getItem("theme");
+      if (saved) document.documentElement.dataset.theme = saved;
+    });
 
     const tglAmbil = document.getElementById("tglAmbil");
     const timerEl = document.getElementById("timer");
@@ -279,13 +291,20 @@
       const data = new FormData(form);
       const npm = data.get("NPM").trim();
       const wa = data.get("WhatsApp").trim();
+      const buktiFile = data.get("Bukti");
+      const submitBtn = document.getElementById("submitBtn");
 
-      if (npm.length < 5 || npm.length > 20) {
-        return Swal.fire("NPM tidak valid", "Panjang NPM harus antara 5-20 karakter", "error");
+      // Validasi tambahan
+      if (!/^\d{5,20}$/.test(npm)) {
+        return Swal.fire("NPM tidak valid", "Harus angka 5–20 digit", "error");
       }
 
       if (!/^08\d{8,11}$/.test(wa)) {
-        return Swal.fire("Nomor WA tidak valid", "Harus diawali 08 dan 10-13 digit", "error");
+        return Swal.fire("Nomor WA tidak valid", "Harus diawali 08 dan 10–13 digit", "error");
+      }
+
+      if (!buktiFile || buktiFile.size === 0) {
+        return Swal.fire("Wajib Upload", "Bukti pembayaran harus diunggah", "warning");
       }
 
       const sent = JSON.parse(localStorage.getItem("formSentNPMs") || "[]");
@@ -293,21 +312,23 @@
         return Swal.fire("Gagal", "NPM ini sudah pernah kirim!", "error");
       }
 
-      const token = "7686312873:AAFgoSgH-5A8RyB8tJRzjevPlXI0iQMi8uI";
-      const chatId = "8087861371";
-      let text = '📥 *Formulir Joki Tugas:*\n\n';
-      data.forEach((val, key) => {
-        if (key !== 'Bukti') text += `*${key}*: ${val}\n`;
-      });
-
       try {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Mengirim...";
+
+        const token = "7686312873:AAFgoSgH-5A8RyB8tJRzjevPlXI0iQMi8uI";
+        const chatId = "8087861371";
+        let text = '📥 *Formulir Joki Tugas:*\n\n';
+        data.forEach((val, key) => {
+          if (key !== 'Bukti') text += `*${key}*: ${val}\n`;
+        });
+
         await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
           method: "POST",
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ chat_id: chatId, text, parse_mode: "Markdown" })
         });
 
-        const buktiFile = data.get("Bukti");
         if (buktiFile && buktiFile.size > 0) {
           const fotoForm = new FormData();
           fotoForm.append("chat_id", chatId);
@@ -324,14 +345,17 @@
         localStorage.setItem("formSentNPMs", JSON.stringify(sent));
         document.getElementById("notif-sound").play();
         Swal.fire("Terkirim!", "Data berhasil dikirim ke Telegram.", "success");
+
         form.reset();
         document.getElementById("harga").value = '';
         document.getElementById("preview-img").style.display = 'none';
-        document.getElementById("bukti-input").value = "";
         document.getElementById("nomor-pembayaran").textContent = "";
         timerEl.textContent = '';
       } catch {
-        Swal.fire("Error", "Gagal mengirim ke Telegram.", "error");
+        Swal.fire("Error", "Gagal mengirim.", "error");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Kirim";
       }
     });
 
