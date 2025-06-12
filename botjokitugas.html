@@ -6,191 +6,71 @@
   <title>Form Joki Tugas</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
+    /* CSS seperti sebelumnya (dipersingkat) */
     body {
       font-family: 'Poppins', sans-serif;
+      background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTD6XwRiFqzn3F0faj7tUrPcz2hKh_oVTQFf5ESWGu9_eEnhEIPZ_MQw0L&s=10') no-repeat center center/cover;
       min-height: 100vh;
-      background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTD6XwRiFqzn3F0faj7tUrPcz2hKh_oVTQFf5ESWGu9_eEnhEIPZ_MQw0L&s=10') no-repeat center center / cover;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
       padding: 30px 15px;
       position: relative;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
     }
-
     body::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.5);
-      z-index: 0;
+      content: ''; position: absolute; inset: 0;
+      background: rgba(0,0,0,0.5); z-index: 0;
     }
-
     .form-container {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      max-width: 550px;
-      background-color: rgba(255, 255, 255, 0.95);
-      padding: 32px;
-      border-radius: 16px;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
-      margin-bottom: 20px;
+      position: relative; z-index: 1;
+      background: rgba(255,255,255,0.95); border-radius: 16px;
+      padding: 32px; max-width: 550px; width: 100%;
     }
-
-    h1.title {
-      text-align: center;
-      font-size: 26px;
-      color: #1877f2;
-      font-weight: 600;
-      margin-bottom: 25px;
+    h1.title { text-align: center; color: #1877f2; font-size: 26px; margin-bottom: 20px; }
+    .field { margin-bottom: 16px; }
+    .field label { display: block; margin-bottom: 6px; }
+    .field input, .field select, .field textarea {
+      width: 100%; padding: 10px 12px;
+      border-radius: 10px; border: 1px solid #ccc;
+      background: #f9f9f9;
     }
-
-    .field { margin-bottom: 20px; }
-
-    .field label {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 14px;
-      font-weight: 500;
-      color: #333;
-    }
-
-    .field input,
-    .field textarea,
-    .field select {
-      width: 100%;
-      padding: 12px 14px;
-      border: 1px solid #ccd0d5;
-      border-radius: 10px;
-      background-color: #f7f8fa;
-      font-size: 14px;
-      transition: border 0.3s ease, background-color 0.3s ease;
-    }
-
-    .field input:focus,
-    .field textarea:focus,
-    .field select:focus {
-      outline: none;
-      border-color: #1877f2;
-      background-color: #fff;
-    }
-
-    textarea {
-      min-height: 90px;
-      resize: vertical;
-    }
-
+    textarea { resize: vertical; min-height: 80px; }
     .btn-submit {
-      width: 100%;
-      background-color: #1877f2;
-      color: #fff;
-      font-weight: 600;
-      font-size: 16px;
-      padding: 14px;
-      border: none;
+      background: #1877f2; color: white;
+      padding: 12px; border: none;
+      width: 100%; font-weight: bold;
       border-radius: 10px;
       cursor: pointer;
-      transition: background-color 0.3s ease, transform 0.2s ease;
     }
-
-    .btn-submit:hover {
-      background-color: #145dc4;
-      transform: translateY(-2px);
-    }
-
-    .loading {
-      text-align: center;
-      margin-top: 10px;
-      font-size: 14px;
-      color: white;
-    }
-
+    .btn-submit:hover { background: #145dc4; }
     .alert-box {
-      position: fixed;
-      top: 30px;
-      left: 50%;
+      position: fixed; top: 20px; left: 50%;
       transform: translateX(-50%);
-      padding: 16px 24px;
+      padding: 12px 20px;
       border-radius: 10px;
-      font-weight: 500;
-      color: white;
-      background-color: #4caf50;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-      opacity: 0;
-      visibility: hidden;
+      background: #4caf50; color: white;
+      opacity: 0; visibility: hidden;
       transition: all 0.3s ease;
       z-index: 999;
     }
-
-    .alert-box.show {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .alert-box.error {
-      background-color: #f44336;
-    }
-
-    .price-list {
-      background-color: #f7f8fa;
-      padding: 10px 14px;
-      border-radius: 10px;
-      margin-top: 10px;
-      font-size: 14px;
-      color: #333;
-    }
-
-    .contact-admin {
-      text-align: center;
-      margin-top: 20px;
-      z-index: 1;
-      position: relative;
-    }
-
-    .contact-admin a {
-      display: inline-block;
-      background-color: #25D366;
-      color: white;
-      font-weight: 500;
-      padding: 12px 20px;
-      border-radius: 10px;
-      text-decoration: none;
-      font-size: 15px;
-      transition: background-color 0.3s ease;
-    }
-
-    .contact-admin a:hover {
-      background-color: #1da851;
-    }
-
-    footer {
-      margin-top: 10px;
-      color: #fff;
-      font-size: 14px;
-      z-index: 1;
-      position: relative;
-      text-align: center;
-    }
-
-    @media (max-width: 480px) {
-      .form-container { padding: 24px; }
-      h1.title { font-size: 22px; }
-    }
+    .alert-box.error { background: #f44336; }
+    .alert-box.show { opacity: 1; visibility: visible; }
+    .price-list { background: #f1f1f1; padding: 10px; border-radius: 10px; font-size: 14px; }
+    footer { color: white; margin-top: 20px; }
   </style>
 </head>
 <body>
+
   <div class="form-container">
     <h1 class="title">Formulir Joki Tugas</h1>
     <form id="form-telegram">
-      <div class="field"><label for="Nama">Nama Lengkap</label><input type="text" id="Nama" name="Nama Lengkap" required></div>
-      <div class="field"><label for="NPM">NPM/NIM</label><input type="number" id="NPM" name="NPM" pattern="[0-9]{5,20}" required></div>
-      <div class="field"><label for="Email">Email</label><input type="email" id="Email" name="Email" required></div>
-      <div class="field"><label for="Materi">Materi</label><input type="text" id="Materi" name="Materi" required></div>
+      <div class="field"><label>Nama Lengkap</label><input type="text" name="Nama Lengkap" required></div>
+      <div class="field"><label>NPM/NIM</label><input type="number" name="NPM" required></div>
+      <div class="field"><label>Email</label><input type="email" name="Email" required></div>
+      <div class="field"><label>Materi</label><input type="text" name="Materi" required></div>
       <div class="field">
-        <label for="Prodi">Program Studi</label>
-        <select id="Prodi" name="Prodi" required>
+        <label>Program Studi</label>
+        <select name="Prodi" required>
           <option value="" disabled selected>Pilih Program Studi</option>
           <option value="TEKNOLOGI INFORMASI">TEKNOLOGI INFORMASI</option>
           <option value="SISTEM INFORMASI">SISTEM INFORMASI</option>
@@ -200,16 +80,16 @@
           <option value="EKONOMI">EKONOMI</option>
           <option value="HUKUM">HUKUM</option>
           <option value="PGSD">PGSD</option>
-          <option value="PGSD">PGPAUD</option>
-          <option value="PGSD">PLS</option>
+          <option value="PGPAUD">PGPAUD</option>
+          <option value="PLS">PLS</option>
           <option value="HUKUM BISNIS DIGITAL">HUKUM BISNIS DIGITAL</option>
         </select>
       </div>
-      <div class="field"><label for="WhatsApp">Nomor WhatsApp</label><input type="tel" id="WhatsApp" name="WhatsApp" pattern="[0-9]{10,15}" required></div>
-      <div class="field"><label for="Tanggal">Tanggal Pengambilan</label><input type="date" id="Tanggal" name="Tanggal Pengambilan" required></div>
+      <div class="field"><label>Nomor WhatsApp</label><input type="tel" name="WhatsApp" inputmode="numeric" pattern="[0-9]{10,15}" required></div>
+      <div class="field"><label>Tanggal Pengambilan</label><input type="date" name="Tanggal Pengambilan" required></div>
       <div class="field">
-        <label for="MetodePembayaran">Metode Pembayaran</label>
-        <select id="MetodePembayaran" name="Metode Pembayaran" required>
+        <label>Metode Pembayaran</label>
+        <select name="Metode Pembayaran" required>
           <option value="" disabled selected>Pilih Metode</option>
           <option value="DANA - 0813 4872 2325">DANA - 0813 4872 2325</option>
         </select>
@@ -218,75 +98,54 @@
           MAKALAH (NON MTK): <strong>Rp20.000</strong><br>
           PPT REGULER: <strong>Rp20.000</strong><br>
           PPT PREMIUM: <strong>Rp45.000</strong><br>
-          ANIMACY ADOBE FLASH: <strong>Rp.50.000</strong><br>
+          ANIMACY ADOBE FLASH: <strong>Rp50.000</strong><br>
           WEBSITE (TUGAS KULIAH): <strong>Rp63.000</strong><br>
           KODING: <strong>Rp45.000</strong>
         </div>
       </div>
       <div class="field">
-        <label for="Bukti">Upload Bukti Pembayaran (JPG/PNG)</label>
-        <input type="file" id="Bukti" name="Bukti" accept=".jpg,.jpeg,.png" required>
+        <label>Upload Bukti Pembayaran (JPG/PNG)</label>
+        <input type="file" name="Bukti" accept=".jpg,.jpeg,.png" required>
       </div>
-      <div class="field"><label for="Pesan">Pesan Tambahan</label><textarea id="Pesan" name="Pesan"></textarea></div>
+      <div class="field"><label>Pesan Tambahan</label><textarea name="Pesan"></textarea></div>
       <button type="submit" class="btn-submit">Kirim Sekarang</button>
-      <div id="status" class="loading"></div>
     </form>
-
-    <!-- Tombol Hubungi Admin -->
-    <div class="contact-admin">
-      <a href="https://wa.me/628994840203" target="_blank">ðŸ’¬ Ambil jokianmu disini</a>
-    </div>
   </div>
 
   <div id="alert" class="alert-box"></div>
-
-  <footer>Â© Renaldi 2025</footer>
+  <footer>© Renaldi 2025</footer>
 
   <script>
     const token = '7686312873:AAFgoSgH-5A8RyB8tJRzjevPlXI0iQMi8uI';
     const group_id = '8087861371';
 
     const form = document.getElementById('form-telegram');
-    const statusDiv = document.getElementById('status');
+    const alertBox = document.getElementById('alert');
 
-    function showAlert(message, isError = false) {
-      const alert = document.getElementById('alert');
-      alert.textContent = message;
-      alert.className = 'alert-box show' + (isError ? ' error' : '');
-      setTimeout(() => {
-        alert.classList.remove('show');
-      }, 4000);
+    function showAlert(msg, isError = false) {
+      alertBox.textContent = msg;
+      alertBox.className = 'alert-box show' + (isError ? ' error' : '');
+      setTimeout(() => alertBox.classList.remove('show'), 4000);
     }
 
-    form.onsubmit = async (e) => {
+    form.addEventListener('submit', async function (e) {
       e.preventDefault();
-
-      const submitButton = form.querySelector('button');
-      submitButton.disabled = true;
-      statusDiv.textContent = "â³ Mengirim...";
-
       const formData = new FormData(form);
-
-      // Validasi tanggal
-      const today = new Date().toISOString().split('T')[0];
-      if (formData.get("Tanggal Pengambilan") < today) {
-        showAlert("âŒ Tanggal pengambilan tidak boleh di masa lalu.", true);
-        submitButton.disabled = false;
-        statusDiv.textContent = "";
-        return;
-      }
-
-      // Validasi file
+      const tanggal = formData.get("Tanggal Pengambilan");
       const file = formData.get("Bukti");
-      if (!file || !file.name.match(/\.(jpg|jpeg|png)$/i)) {
-        showAlert("âŒ Format bukti harus JPG/PNG.", true);
-        submitButton.disabled = false;
-        statusDiv.textContent = "";
+      const today = new Date().toISOString().split('T')[0];
+
+      if (tanggal < today) {
+        showAlert("❌ Tanggal tidak boleh di masa lalu.", true);
         return;
       }
 
-      // Format pesan teks
-      let text = 'ðŸ“¥ *Formulir Joki Tugas:*\n\n';
+      if (!file || !file.name.match(/\.(jpg|jpeg|png)$/i)) {
+        showAlert("❌ Format file harus JPG/PNG.", true);
+        return;
+      }
+
+      let text = '📥 *Formulir Joki Tugas:*\n\n';
       for (const [key, val] of formData.entries()) {
         if (key !== 'Bukti') {
           text += `*${key}*: ${val}\n`;
@@ -294,14 +153,12 @@
       }
 
       try {
-        // Kirim pesan teks
         await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ chat_id: group_id, text, parse_mode: "Markdown" })
         });
 
-        // Kirim foto bukti
         const photoData = new FormData();
         photoData.append("chat_id", group_id);
         photoData.append("photo", file);
@@ -311,16 +168,13 @@
           body: photoData
         });
 
-        showAlert("âœ… Data berhasil dikirim!");
+        showAlert("✅ Data berhasil dikirim!");
         form.reset();
       } catch (err) {
         console.error(err);
-        showAlert("âŒ Gagal mengirim data. Silakan coba lagi.", true);
-      } finally {
-        submitButton.disabled = false;
-        statusDiv.textContent = "";
+        showAlert("❌ Gagal mengirim data. Coba lagi.", true);
       }
-    };
+    });
   </script>
 </body>
 </html>
