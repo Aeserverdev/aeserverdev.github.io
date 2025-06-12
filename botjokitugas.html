@@ -110,6 +110,11 @@
       width: 100px;
     }
 
+    #nomor-pembayaran {
+      margin-top: 5px;
+      font-weight: bold;
+      color: #0c6efd;
+    }
   </style>
 </head>
 <body>
@@ -128,23 +133,22 @@
         <input name="NPM" required>
       </label>
 
-      <div class="field">
-        <label>Program Studi</label>
+      <label>Program Studi
         <select name="Prodi" required>
           <option value="" disabled selected>Pilih Program Studi</option>
-          <option value="TEKNOLOGI INFORMASI">TEKNOLOGI INFORMASI</option>
-          <option value="SISTEM INFORMASI">SISTEM INFORMASI</option>
-          <option value="BAHASA DAN SASTRA INDONESIA">BAHASA DAN SASTRA INDONESIA</option>
-          <option value="BAHASA INGGRIS">BAHASA INGGRIS</option>
-          <option value="BIOLOGI">BIOLOGI</option>
-          <option value="EKONOMI">EKONOMI</option>
-          <option value="HUKUM">HUKUM</option>
-          <option value="PGSD">PGSD</option>
-          <option value="PGPAUD">PGPAUD</option>
-          <option value="PLS">PLS</option>
-          <option value="HUKUM BISNIS DIGITAL">HUKUM BISNIS DIGITAL</option>
+          <option>TEKNOLOGI INFORMASI</option>
+          <option>SISTEM INFORMASI</option>
+          <option>BAHASA DAN SASTRA INDONESIA</option>
+          <option>BAHASA INGGRIS</option>
+          <option>BIOLOGI</option>
+          <option>EKONOMI</option>
+          <option>HUKUM</option>
+          <option>PGSD</option>
+          <option>PGPAUD</option>
+          <option>PLS</option>
+          <option>HUKUM BISNIS DIGITAL</option>
         </select>
-      </div>
+      </label>
 
       <label>WhatsApp
         <input name="WhatsApp" required>
@@ -165,6 +169,17 @@
       <label>Harga
         <input id="harga" name="Harga" readonly>
       </label>
+
+      <div id="metode-container">
+        <label for="metode">Metode Pembayaran:</label>
+        <select id="metode" name="Metode Pembayaran" required onchange="updateMetode()">
+          <option value="" disabled selected>-- Pilih Metode --</option>
+          <option value="DANA">DANA</option>
+          <option value="OVO">OVO</option>
+          <option value="Gopay">Gopay</option>
+        </select>
+        <p id="nomor-pembayaran"></p>
+      </div>
 
       <label>Tanggal Ambil
         <input type="date" id="tglAmbil" name="Tanggal Ambil" required>
@@ -198,25 +213,42 @@
       "koding": 45000
     };
 
-    const jenisTugas = document.getElementById("jenis-tugas");
-    const hargaField = document.getElementById("harga");
-
-    jenisTugas.addEventListener("change", () => {
-      const val = jenisTugas.value.toLowerCase();
-      hargaField.value = "Rp" + (hargaMap[val] || 0).toLocaleString("id-ID");
+    document.getElementById("jenis-tugas").addEventListener("change", () => {
+      const val = document.getElementById("jenis-tugas").value.toLowerCase();
+      document.getElementById("harga").value = "Rp" + (hargaMap[val] || 0).toLocaleString("id-ID");
     });
 
-    const previewImg = document.getElementById("preview-img");
+    function updateMetode() {
+      const metode = document.getElementById("metode").value;
+      const output = document.getElementById("nomor-pembayaran");
+
+      switch (metode) {
+        case "DANA":
+          output.textContent = "🔹 Nomor DANA: 0813-4872-2325";
+          break;
+        case "OVO":
+          output.textContent = "🔸 Nomor OVO: 08xx-xxxx-xxxx";
+          break;
+        case "Gopay":
+          output.textContent = "🟢 Nomor Gopay: 08xx-xxxx-xxxx";
+          break;
+        default:
+          output.textContent = "";
+      }
+    }
+
     document.getElementById("bukti-input").addEventListener("change", e => {
       const file = e.target.files[0];
       if (file && file.size <= 2 * 1024 * 1024 && file.type.startsWith("image/")) {
         const reader = new FileReader();
         reader.onload = ev => {
-          previewImg.src = ev.target.result;
-          previewImg.style.display = "block";
+          document.getElementById("preview-img").src = ev.target.result;
+          document.getElementById("preview-img").style.display = "block";
         };
         reader.readAsDataURL(file);
-      } else previewImg.style.display = "none";
+      } else {
+        document.getElementById("preview-img").style.display = "none";
+      }
     });
 
     function toggleDark() {
@@ -240,7 +272,6 @@
     }
     setInterval(updateCountdown, 1000);
     tglAmbil.addEventListener("change", updateCountdown);
-    if (tglAmbil.value) updateCountdown();
 
     document.getElementById("form-telegram").addEventListener("submit", async e => {
       e.preventDefault();
@@ -262,8 +293,8 @@
         return Swal.fire("Gagal", "NPM ini sudah pernah kirim!", "error");
       }
 
-      const token = "7686312873:AAFgoSgH-5A8RyB8tJRzjevPlXI0iQMi8uI"; // GANTI DENGAN TOKEN BOT ANDA
-      const chatId = "8087861371"; // GANTI DENGAN CHAT ID ANDA
+      const token = "7686312873:AAFgoSgH-5A8RyB8tJRzjevPlXI0iQMi8uI";
+      const chatId = "8087861371";
       let text = '📥 *Formulir Joki Tugas:*\n\n';
       data.forEach((val, key) => {
         if (key !== 'Bukti') text += `*${key}*: ${val}\n`;
@@ -293,13 +324,12 @@
         localStorage.setItem("formSentNPMs", JSON.stringify(sent));
         document.getElementById("notif-sound").play();
         Swal.fire("Terkirim!", "Data berhasil dikirim ke Telegram.", "success");
-
         form.reset();
-        hargaField.value = '';
-        previewImg.style.display = 'none';
-        form.querySelector('#bukti-input').value = "";
+        document.getElementById("harga").value = '';
+        document.getElementById("preview-img").style.display = 'none';
+        document.getElementById("bukti-input").value = "";
+        document.getElementById("nomor-pembayaran").textContent = "";
         timerEl.textContent = '';
-
       } catch {
         Swal.fire("Error", "Gagal mengirim ke Telegram.", "error");
       }
