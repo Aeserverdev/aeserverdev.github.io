@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Form Joki Tugas</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
     body {
       font-family: 'Poppins', sans-serif;
@@ -40,6 +41,7 @@
       width: 100%; font-weight: bold;
       border-radius: 10px;
       cursor: pointer;
+      margin-bottom: 10px;
     }
     .btn-submit:hover { background: #145dc4; }
     .alert-box {
@@ -57,9 +59,9 @@
     .price-list { background: #f1f1f1; padding: 10px; border-radius: 10px; font-size: 14px; }
     #countdown { font-size: 13px; color: #555; margin-top: 5px; }
     #preview-img { margin-top:10px; max-width:100%; border-radius:10px; display:none; }
-    footer { color: white; margin-top: 20px; }
+    footer { color: white; margin-top: 20px; text-align:center; }
 
-    /* Mode Gelap Otomatis */
+    /* Mode Gelap */
     @media (prefers-color-scheme: dark) {
       body::before { background: rgba(0,0,0,0.7); }
       .form-container {
@@ -75,6 +77,23 @@
       .form-container .price-list { background: #444; }
       .form-container .btn-submit { background: #2196f3; }
       .form-container .btn-submit:hover { background: #0d8ae6; }
+    }
+
+    dialog {
+      border: none;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 400px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    }
+    dialog::backdrop {
+      background: rgba(0,0,0,0.4);
+    }
+    .modal-buttons {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-top: 20px;
     }
   </style>
 </head>
@@ -124,7 +143,7 @@
 
       <div class="field">
         <label>Nomor WhatsApp</label>
-        <input type="tel" name="WhatsApp" inputmode="numeric" pattern="[0-9]{10,15}" required>
+        <input type="tel" name="WhatsApp" required>
       </div>
 
       <div class="field">
@@ -141,12 +160,12 @@
         </select>
         <div class="price-list">
           <strong>Daftar Harga:</strong><br>
-          MAKALAH: <strong>Rp20.000</strong><br>
-          PPT REGULER: <strong>Rp20.000</strong><br>
-          PPT PREMIUM: <strong>Rp45.000</strong><br>
-          ANIMACY ADOBE FLASH: <strong>Rp50.000</strong><br>
-          WEBSITE: <strong>Rp63.000</strong><br>
-          KODING: <strong>Rp45.000</strong>
+          Makalah: Rp20.000<br>
+          PPT Reguler: Rp20.000<br>
+          PPT Premium: Rp45.000<br>
+          Flash: Rp50.000<br>
+          Website: Rp63.000<br>
+          Koding: Rp45.000
         </div>
       </div>
 
@@ -157,9 +176,19 @@
       </div>
 
       <div class="field"><label>Pesan Tambahan</label><textarea name="Pesan"></textarea></div>
+
       <button type="submit" class="btn-submit">Kirim Sekarang</button>
+      <button type="button" onclick="generatePDF()" class="btn-submit" style="background:#4caf50;">Download PDF</button>
     </form>
   </div>
+
+  <dialog id="confirmModal">
+    <h3>Yakin ingin mengirim formulir ini?</h3>
+    <div class="modal-buttons">
+      <button onclick="submitConfirmed()">Ya</button>
+      <button onclick="document.getElementById('confirmModal').close()">Batal</button>
+    </div>
+  </dialog>
 
   <div id="alert" class="alert-box"></div>
   <footer>© Renaldi 2025</footer>
@@ -170,15 +199,15 @@
 
     const form = document.getElementById('form-telegram');
     const alertBox = document.getElementById('alert');
-    const hargaField = document.getElementById("harga");
     const jenisTugas = document.getElementById("jenis-tugas");
+    const hargaField = document.getElementById("harga");
     const buktiInput = document.getElementById("bukti-input");
     const previewImg = document.getElementById("preview-img");
     const waInput = form.querySelector('input[name="WhatsApp"]');
     const tanggalInput = form.querySelector('input[name="Tanggal Pengambilan"]');
-    const countdown = document.getElementById('countdown');
+    const countdown = document.getElementById("countdown");
+    const modal = document.getElementById("confirmModal");
 
-    // Harga otomatis
     const hargaTugas = {
       "makalah": 20000,
       "ppt reguler": 20000,
@@ -193,7 +222,6 @@
       hargaField.value = "Rp" + (hargaTugas[val] || 0).toLocaleString("id-ID");
     });
 
-    // Validasi WA
     waInput.addEventListener("input", () => {
       if (!waInput.value.startsWith("08")) {
         waInput.setCustomValidity("Nomor WA harus dimulai dari 08");
@@ -202,15 +230,13 @@
       }
     });
 
-    // Countdown tanggal
-    tanggalInput.addEventListener('change', () => {
+    tanggalInput.addEventListener("change", () => {
       const tanggal = new Date(tanggalInput.value);
       const today = new Date();
       const selisih = Math.ceil((tanggal - today) / (1000 * 60 * 60 * 24));
       countdown.textContent = selisih >= 0 ? `🕒 Tersisa ${selisih} hari lagi.` : `⚠️ Tanggal sudah lewat.`;
     });
 
-    // Preview Gambar
     buktiInput.addEventListener("change", () => {
       const file = buktiInput.files[0];
       if (file && file.type.match("image.*")) {
@@ -225,17 +251,16 @@
       }
     });
 
-    function showAlert(msg, isError = false) {
-      alertBox.textContent = msg;
-      alertBox.className = 'alert-box show' + (isError ? ' error' : '');
-      setTimeout(() => alertBox.classList.remove('show'), 4000);
-    }
-
-    form.addEventListener('submit', async function (e) {
+    form.addEventListener("submit", e => {
       e.preventDefault();
+      modal.showModal(); // tampilkan modal konfirmasi
+    });
+
+    async function submitConfirmed() {
+      modal.close();
       const formData = new FormData(form);
-      const tanggal = formData.get("Tanggal Pengambilan");
       const file = formData.get("Bukti");
+      const tanggal = formData.get("Tanggal Pengambilan");
       const today = new Date().toISOString().split('T')[0];
 
       if (tanggal < today) {
@@ -248,16 +273,10 @@
         return;
       }
 
-      if (file.size > 2 * 1024 * 1024) {
-        showAlert("❌ Ukuran gambar maksimal 2MB.", true);
-        return;
-      }
-
       let text = '📥 *Formulir Joki Tugas:*\n\n';
       for (const [key, val] of formData.entries()) {
-        if (key !== 'Bukti') {
-          text += `*${key}*: ${val}\n`;
-        }
+        if (key !== 'Bukti') text += `*${key}*: ${val}\n`;
+        localStorage.setItem(key, val); // simpan ke localStorage
       }
 
       try {
@@ -277,14 +296,37 @@
         });
 
         showAlert("✅ Data berhasil dikirim!");
-        form.reset();
-        hargaField.value = '';
-        countdown.textContent = '';
+        form.reset(); hargaField.value = ''; countdown.textContent = '';
         previewImg.style.display = 'none';
+        localStorage.clear();
       } catch (err) {
-        console.error(err);
-        showAlert("❌ Gagal mengirim data. Coba lagi.", true);
+        showAlert("❌ Gagal mengirim data.", true);
       }
+    }
+
+    function showAlert(msg, isError = false) {
+      alertBox.textContent = msg;
+      alertBox.className = 'alert-box show' + (isError ? ' error' : '');
+      setTimeout(() => alertBox.classList.remove('show'), 4000);
+    }
+
+    function generatePDF() {
+      const data = new FormData(form);
+      let html = `<h2 style="color:#1877f2">Formulir Joki Tugas</h2><hr><br>`;
+      data.forEach((val, key) => {
+        if (key !== "Bukti") html += `<p><strong>${key}:</strong> ${val}</p>`;
+      });
+      html2pdf().from(html).save(`Formulir_Joki_${data.get("Nama Lengkap") || "Tugas"}.pdf`);
+    }
+
+    // Load kembali dari localStorage jika ada
+    window.addEventListener("DOMContentLoaded", () => {
+      const inputs = form.querySelectorAll("input, select, textarea");
+      inputs.forEach(input => {
+        if (localStorage.getItem(input.name)) {
+          input.value = localStorage.getItem(input.name);
+        }
+      });
     });
   </script>
 </body>
