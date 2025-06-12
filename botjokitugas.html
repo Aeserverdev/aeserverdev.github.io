@@ -6,7 +6,6 @@
   <title>Form Joki Tugas</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
   <style>
-    /* CSS seperti sebelumnya (dipersingkat) */
     body {
       font-family: 'Poppins', sans-serif;
       background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTD6XwRiFqzn3F0faj7tUrPcz2hKh_oVTQFf5ESWGu9_eEnhEIPZ_MQw0L&s=10') no-repeat center center/cover;
@@ -56,7 +55,27 @@
     .alert-box.error { background: #f44336; }
     .alert-box.show { opacity: 1; visibility: visible; }
     .price-list { background: #f1f1f1; padding: 10px; border-radius: 10px; font-size: 14px; }
+    #countdown { font-size: 13px; color: #555; margin-top: 5px; }
+    #preview-img { margin-top:10px; max-width:100%; border-radius:10px; display:none; }
     footer { color: white; margin-top: 20px; }
+
+    /* Mode Gelap Otomatis */
+    @media (prefers-color-scheme: dark) {
+      body::before { background: rgba(0,0,0,0.7); }
+      .form-container {
+        background: rgba(30,30,30,0.95);
+        color: white;
+      }
+      .form-container input,
+      .form-container select,
+      .form-container textarea {
+        background: #333; color: #fff;
+        border: 1px solid #555;
+      }
+      .form-container .price-list { background: #444; }
+      .form-container .btn-submit { background: #2196f3; }
+      .form-container .btn-submit:hover { background: #0d8ae6; }
+    }
   </style>
 </head>
 <body>
@@ -67,7 +86,24 @@
       <div class="field"><label>Nama Lengkap</label><input type="text" name="Nama Lengkap" required></div>
       <div class="field"><label>NPM/NIM</label><input type="number" name="NPM" required></div>
       <div class="field"><label>Email</label><input type="email" name="Email" required></div>
-      <div class="field"><label>Materi</label><input type="text" name="Materi" required></div>
+
+      <div class="field">
+        <label>Jenis Tugas</label>
+        <select id="jenis-tugas" name="Materi" required>
+          <option value="" disabled selected>Pilih Jenis Tugas</option>
+          <option value="Makalah">Makalah</option>
+          <option value="PPT Reguler">PPT Reguler</option>
+          <option value="PPT Premium">PPT Premium</option>
+          <option value="Animacy Adobe Flash">Animacy Adobe Flash</option>
+          <option value="Website">Website</option>
+          <option value="Koding">Koding</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Estimasi Harga</label>
+        <input type="text" id="harga" disabled style="background-color:#eee; font-weight:bold;">
+      </div>
+
       <div class="field">
         <label>Program Studi</label>
         <select name="Prodi" required>
@@ -85,8 +121,18 @@
           <option value="HUKUM BISNIS DIGITAL">HUKUM BISNIS DIGITAL</option>
         </select>
       </div>
-      <div class="field"><label>Nomor WhatsApp</label><input type="tel" name="WhatsApp" inputmode="numeric" pattern="[0-9]{10,15}" required></div>
-      <div class="field"><label>Tanggal Pengambilan</label><input type="date" name="Tanggal Pengambilan" required></div>
+
+      <div class="field">
+        <label>Nomor WhatsApp</label>
+        <input type="tel" name="WhatsApp" inputmode="numeric" pattern="[0-9]{10,15}" required>
+      </div>
+
+      <div class="field">
+        <label>Tanggal Pengambilan</label>
+        <input type="date" name="Tanggal Pengambilan" required>
+        <div id="countdown"></div>
+      </div>
+
       <div class="field">
         <label>Metode Pembayaran</label>
         <select name="Metode Pembayaran" required>
@@ -95,18 +141,21 @@
         </select>
         <div class="price-list">
           <strong>Daftar Harga:</strong><br>
-          MAKALAH (NON MTK): <strong>Rp20.000</strong><br>
+          MAKALAH: <strong>Rp20.000</strong><br>
           PPT REGULER: <strong>Rp20.000</strong><br>
           PPT PREMIUM: <strong>Rp45.000</strong><br>
           ANIMACY ADOBE FLASH: <strong>Rp50.000</strong><br>
-          WEBSITE (TUGAS KULIAH): <strong>Rp63.000</strong><br>
+          WEBSITE: <strong>Rp63.000</strong><br>
           KODING: <strong>Rp45.000</strong>
         </div>
       </div>
+
       <div class="field">
         <label>Upload Bukti Pembayaran (JPG/PNG)</label>
-        <input type="file" name="Bukti" accept=".jpg,.jpeg,.png" required>
+        <input type="file" name="Bukti" accept=".jpg,.jpeg,.png" required id="bukti-input">
+        <img id="preview-img" />
       </div>
+
       <div class="field"><label>Pesan Tambahan</label><textarea name="Pesan"></textarea></div>
       <button type="submit" class="btn-submit">Kirim Sekarang</button>
     </form>
@@ -121,6 +170,60 @@
 
     const form = document.getElementById('form-telegram');
     const alertBox = document.getElementById('alert');
+    const hargaField = document.getElementById("harga");
+    const jenisTugas = document.getElementById("jenis-tugas");
+    const buktiInput = document.getElementById("bukti-input");
+    const previewImg = document.getElementById("preview-img");
+    const waInput = form.querySelector('input[name="WhatsApp"]');
+    const tanggalInput = form.querySelector('input[name="Tanggal Pengambilan"]');
+    const countdown = document.getElementById('countdown');
+
+    // Harga otomatis
+    const hargaTugas = {
+      "makalah": 20000,
+      "ppt reguler": 20000,
+      "ppt premium": 45000,
+      "animacy adobe flash": 50000,
+      "website": 63000,
+      "koding": 45000
+    };
+
+    jenisTugas.addEventListener("change", () => {
+      const val = jenisTugas.value.toLowerCase();
+      hargaField.value = "Rp" + (hargaTugas[val] || 0).toLocaleString("id-ID");
+    });
+
+    // Validasi WA
+    waInput.addEventListener("input", () => {
+      if (!waInput.value.startsWith("08")) {
+        waInput.setCustomValidity("Nomor WA harus dimulai dari 08");
+      } else {
+        waInput.setCustomValidity("");
+      }
+    });
+
+    // Countdown tanggal
+    tanggalInput.addEventListener('change', () => {
+      const tanggal = new Date(tanggalInput.value);
+      const today = new Date();
+      const selisih = Math.ceil((tanggal - today) / (1000 * 60 * 60 * 24));
+      countdown.textContent = selisih >= 0 ? `🕒 Tersisa ${selisih} hari lagi.` : `⚠️ Tanggal sudah lewat.`;
+    });
+
+    // Preview Gambar
+    buktiInput.addEventListener("change", () => {
+      const file = buktiInput.files[0];
+      if (file && file.type.match("image.*")) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          previewImg.src = e.target.result;
+          previewImg.style.display = "block";
+        };
+        reader.readAsDataURL(file);
+      } else {
+        previewImg.style.display = "none";
+      }
+    });
 
     function showAlert(msg, isError = false) {
       alertBox.textContent = msg;
@@ -142,6 +245,11 @@
 
       if (!file || !file.name.match(/\.(jpg|jpeg|png)$/i)) {
         showAlert("❌ Format file harus JPG/PNG.", true);
+        return;
+      }
+
+      if (file.size > 2 * 1024 * 1024) {
+        showAlert("❌ Ukuran gambar maksimal 2MB.", true);
         return;
       }
 
@@ -170,6 +278,9 @@
 
         showAlert("✅ Data berhasil dikirim!");
         form.reset();
+        hargaField.value = '';
+        countdown.textContent = '';
+        previewImg.style.display = 'none';
       } catch (err) {
         console.error(err);
         showAlert("❌ Gagal mengirim data. Coba lagi.", true);
