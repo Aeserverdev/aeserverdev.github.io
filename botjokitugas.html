@@ -200,6 +200,8 @@
           <option value="EKONOMI">EKONOMI</option>
           <option value="HUKUM">HUKUM</option>
           <option value="PGSD">PGSD</option>
+          <option value="PGSD">PGPAUD</option>
+          <option value="PGSD">PLS</option>
           <option value="HUKUM BISNIS DIGITAL">HUKUM BISNIS DIGITAL</option>
         </select>
       </div>
@@ -216,6 +218,7 @@
           MAKALAH (NON MTK): <strong>Rp20.000</strong><br>
           PPT REGULER: <strong>Rp20.000</strong><br>
           PPT PREMIUM: <strong>Rp45.000</strong><br>
+          ANIMACY ADOBE FLASH: <strong>Rp.50.000</strong><br>
           WEBSITE (TUGAS KULIAH): <strong>Rp63.000</strong><br>
           KODING: <strong>Rp45.000</strong>
         </div>
@@ -231,13 +234,13 @@
 
     <!-- Tombol Hubungi Admin -->
     <div class="contact-admin">
-      <a href="https://wa.me/628994840203" target="_blank">💬 Ambil jokianmu disini</a>
+      <a href="https://wa.me/628994840203" target="_blank">ðŸ’¬ Ambil jokianmu disini</a>
     </div>
   </div>
 
   <div id="alert" class="alert-box"></div>
 
-  <footer>© Renaldi 2025</footer>
+  <footer>Â© Renaldi 2025</footer>
 
   <script>
     const token = '7686312873:AAFgoSgH-5A8RyB8tJRzjevPlXI0iQMi8uI';
@@ -260,14 +263,14 @@
 
       const submitButton = form.querySelector('button');
       submitButton.disabled = true;
-      statusDiv.textContent = "⏳ Mengirim...";
+      statusDiv.textContent = "â³ Mengirim...";
 
       const formData = new FormData(form);
 
       // Validasi tanggal
       const today = new Date().toISOString().split('T')[0];
       if (formData.get("Tanggal Pengambilan") < today) {
-        showAlert("❌ Tanggal pengambilan tidak boleh di masa lalu.", true);
+        showAlert("âŒ Tanggal pengambilan tidak boleh di masa lalu.", true);
         submitButton.disabled = false;
         statusDiv.textContent = "";
         return;
@@ -276,14 +279,14 @@
       // Validasi file
       const file = formData.get("Bukti");
       if (!file || !file.name.match(/\.(jpg|jpeg|png)$/i)) {
-        showAlert("❌ Format bukti harus JPG/PNG.", true);
+        showAlert("âŒ Format bukti harus JPG/PNG.", true);
         submitButton.disabled = false;
         statusDiv.textContent = "";
         return;
       }
 
       // Format pesan teks
-      let text = '📥 *Formulir Joki Tugas:*\n\n';
+      let text = 'ðŸ“¥ *Formulir Joki Tugas:*\n\n';
       for (const [key, val] of formData.entries()) {
         if (key !== 'Bukti') {
           text += `*${key}*: ${val}\n`;
@@ -308,11 +311,11 @@
           body: photoData
         });
 
-        showAlert("✅ Data berhasil dikirim!");
+        showAlert("âœ… Data berhasil dikirim!");
         form.reset();
       } catch (err) {
         console.error(err);
-        showAlert("❌ Gagal mengirim data. Silakan coba lagi.", true);
+        showAlert("âŒ Gagal mengirim data. Silakan coba lagi.", true);
       } finally {
         submitButton.disabled = false;
         statusDiv.textContent = "";
