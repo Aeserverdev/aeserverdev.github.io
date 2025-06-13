@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login Akun</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f2f5;
+      padding: 40px 20px;
+    }
+    .container {
+      max-width: 400px;
+      margin: auto;
+      background: #fff;
+      padding: 25px 30px;
+      border-radius: 10px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .link {
+      text-align: center;
+      margin-top: 15px;
+    }
+    .link a {
+      text-decoration: none;
+      color: #28a745;
+    }
+    #loading {
+      text-align: center;
+      color: #555;
+      margin-top: 10px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Form Login</h2>
+    <form id="form-login">
+      <input type="email" id="email" placeholder="Email" required>
+      <input type="password" id="password" placeholder="Password" required>
+      <button type="submit">Login</button>
+      <div id="loading">🔐 Memverifikasi...</div>
+    </form>
+    <div class="link">
+      Belum punya akun? <a href="daftar.html">Daftar sekarang</a>
+    </div>
+  </div>
+
+  <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycbzTJr-Q4qk-DEW4n7ukeBS7-XvLquEcnncAH2BDAOw-SLaY6rUoSJ7qEoSWrb0p93dN8A/exec";
+    const form = document.getElementById("form-login");
+    const loading = document.getElementById("loading");
+
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+      loading.style.display = "block";
+
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      fetch(scriptURL, {
+        method: "POST",
+        body: JSON.stringify({ action: "login", email, password })
+      })
+      .then(res => res.text())
+      .then(res => {
+        loading.style.display = "none";
+        if (res === "success") {
+          localStorage.setItem("isLoggedIn", "true");
+          localStorage.setItem("userEmail", email);
+          window.location.href = "dashboard.html";
+        } else {
+          alert("❌ Login gagal. Email atau password salah.");
+        }
+      })
+      .catch(() => {
+        loading.style.display = "none";
+        alert("❌ Terjadi kesalahan jaringan.");
+      });
+    });
+  </script>
+</body>
+</html>
