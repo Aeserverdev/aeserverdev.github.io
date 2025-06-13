@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Formulir Joki Tugas</title>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <style>
+    :root {
+      --primary: #0056b3;
+      --bg-light: #ffffff;
+      --text-light: #000000;
+      --bg-dark: #1c1c1c;
+      --text-dark: #eeeeee;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 2rem;
+      background-color: var(--bg);
+      color: var(--text);
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    [data-theme="light"] {
+      --bg: var(--bg-light);
+      --text: var(--text-light);
+    }
+
+    [data-theme="dark"] {
+      --bg: var(--bg-dark);
+      --text: var(--text-dark);
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: rgba(255,255,255,0.05);
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: 600;
+    }
+
+    input, select, button {
+      width: 100%;
+      margin-top: 5px;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+
+    button {
+      background-color: var(--primary);
+      color: white;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    #preview-img {
+      max-width: 100%;
+      display: none;
+      margin-top: 10px;
+      border-radius: 8px;
+    }
+
+    .theme-toggle {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      cursor: pointer;
+      font-size: 1.5rem;
+    }
+
+    .logo {
+      display: block;
+      margin: auto;
+      max-width: 100px;
+    }
+
+    #timer {
+      margin-top: 1rem;
+      font-style: italic;
+      color: #d63384;
+    }
+
+    .qr-container {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+
+    .qr-container img {
+      width: 100px;
+    }
+
+    #nomor-pembayaran {
+      margin-top: 5px;
+      font-weight: bold;
+      color: #0c6efd;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="theme-toggle" onclick="toggleDark()">🌓</div>
+
+  <div class="container">
+    <img src="https://smart.universitasmerangin.ac.id/storage/uploads/setting/tHDM9h1AAps6ZEmH4fTl5uoLXjve8DrDwK8ps4XC.png" class="logo" alt="Logo Kampus" />
+    <h1>Formulir Joki Tugas</h1>
+
+    <form id="form-telegram">
+      <label>Nama Lengkap
+        <input name="Nama Lengkap" required>
+      </label>
+
+      <label>NPM
+        <input name="NPM" required pattern="^\d{5,20}$" placeholder="Contoh: 22210012">
+      </label>
+
+      <label>Program Studi
+        <select name="Prodi" required>
+          <option value="" disabled selected>Pilih Program Studi</option>
+          <option>TEKNOLOGI INFORMASI</option>
+          <option>SISTEM INFORMASI</option>
+          <option>BAHASA DAN SASTRA INDONESIA</option>
+          <option>BAHASA INGGRIS</option>
+          <option>BIOLOGI</option>
+          <option>EKONOMI</option>
+          <option>HUKUM</option>
+          <option>PGSD</option>
+          <option>PGPAUD</option>
+          <option>PLS</option>
+          <option>HUKUM BISNIS DIGITAL</option>
+        </select>
+      </label>
+
+      <label>WhatsApp
+        <input name="WhatsApp" required placeholder="Contoh: 08xxxxxxxxxx" pattern="^08\d{8,11}$">
+      </label>
+
+      <label>Jenis Tugas
+        <select id="jenis-tugas" name="Jenis Tugas" required>
+          <option value="">-- Pilih --</option>
+          <option>Makalah</option>
+          <option>PPT Reguler</option>
+          <option>PPT Premium</option>
+          <option>Animacy Adobe Flash</option>
+          <option>Website</option>
+          <option>Koding</option>
+        </select>
+      </label>
+
+      <label>Harga
+        <input id="harga" name="Harga" readonly>
+      </label>
+
+      <div id="metode-container">
+        <label for="metode">Metode Pembayaran:</label>
+        <select id="metode" name="Metode Pembayaran" required onchange="updateMetode()">
+          <option value="" disabled selected>-- Pilih Metode --</option>
+          <option value="DANA">DANA</option>
+          <option value="OVO">OVO</option>
+          <option value="Gopay">Gopay</option>
+        </select>
+        <p id="nomor-pembayaran"></p>
+      </div>
+
+      <label>Tanggal Ambil
+        <input type="date" id="tglAmbil" name="Tanggal Ambil" required>
+      </label>
+      <p id="timer"></p>
+
+      <label>Bukti Pembayaran (wajib)
+        <input type="file" id="bukti-input" name="Bukti" accept="image/*" required>
+        <img id="preview-img">
+      </label>
+
+      <button type="button" id="previewBtn">Lihat Ringkasan</button>
+      <button type="submit" id="submitBtn">Kirim</button>
+      <button type="button" onclick="generatePDF()">Export PDF</button>
+    </form>
+
+    <div class="qr-container">
+      <p>Pindai untuk informasi lebih lanjut</p>
+      <img src="https://wa.me/628994840203" alt="QR Code">
+    </div>
+  </div>
+<div class="footer"> &copy; 2025 Renaldi. All Rights Reserved.</div>
+  <audio id="notif-sound" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg" preload="auto"></audio>
+
+  <script>
+    const hargaMap = {
+      "makalah": 20000,
+      "ppt reguler": 20000,
+      "ppt premium": 45000,
+      "animacy adobe flash": 50000,
+      "website": 63000,
+      "koding": 45000
+    };
+
+    document.getElementById("jenis-tugas").addEventListener("change", () => {
+      const val = document.getElementById("jenis-tugas").value.toLowerCase();
+      document.getElementById("harga").value = "Rp" + (hargaMap[val] || 0).toLocaleString("id-ID");
+    });
+
+    function updateMetode() {
+      const metode = document.getElementById("metode").value;
+      const output = document.getElementById("nomor-pembayaran");
+
+      switch (metode) {
+        case "DANA":
+          output.textContent = "🔹 Nomor DANA: 0813-4872-2325";
+          break;
+        case "OVO":
+          output.textContent = "🔸 Nomor OVO: ";
+          break;
+        case "Gopay":
+          output.textContent = "🟢 Nomor Gopay: ";
+          break;
+        default:
+          output.textContent = "";
+      }
+    }
+
+    document.getElementById("bukti-input").addEventListener("change", e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      if (file.size > 2 * 1024 * 1024 || !file.type.startsWith("image/")) {
+        Swal.fire("Bukti tidak valid", "Gunakan gambar (maks 2MB)", "error");
+        e.target.value = "";
+        document.getElementById("preview-img").style.display = "none";
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = ev => {
+        document.getElementById("preview-img").src = ev.target.result;
+        document.getElementById("preview-img").style.display = "block";
+      };
+      reader.readAsDataURL(file);
+    });
+
+    function toggleDark() {
+      const html = document.documentElement;
+      const newTheme = html.dataset.theme === "dark" ? "light" : "dark";
+      html.dataset.theme = newTheme;
+      localStorage.setItem("theme", newTheme);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const saved = localStorage.getItem("theme");
+      if (saved) document.documentElement.dataset.theme = saved;
+    });
+
+    const tglAmbil = document.getElementById("tglAmbil");
+    const timerEl = document.getElementById("timer");
+    tglAmbil.min = new Date().toISOString().split("T")[0];
+
+    function updateCountdown() {
+      const tgl = new Date(tglAmbil.value);
+      if (isNaN(tgl)) return timerEl.textContent = "";
+      const sisa = tgl - new Date();
+      if (sisa < 0) return timerEl.textContent = "⚠️ Tanggal lewat!";
+      const d = Math.floor(sisa / 86400000);
+      const h = Math.floor((sisa % 86400000) / 3600000);
+      const m = Math.floor((sisa % 3600000) / 60000);
+      timerEl.textContent = `⏳ Sisa waktu: ${d} hari ${h} jam ${m} menit`;
+    }
+    setInterval(updateCountdown, 1000);
+    tglAmbil.addEventListener("change", updateCountdown);
+
+    document.getElementById("form-telegram").addEventListener("submit", async e => {
+      e.preventDefault();
+      const form = e.target;
+      const data = new FormData(form);
+      const npm = data.get("NPM").trim();
+      const wa = data.get("WhatsApp").trim();
+      const buktiFile = data.get("Bukti");
+      const submitBtn = document.getElementById("submitBtn");
+
+      // Validasi tambahan
+      if (!/^\d{5,20}$/.test(npm)) {
+        return Swal.fire("NPM tidak valid", "Harus angka 5–20 digit", "error");
+      }
+
+      if (!/^08\d{8,11}$/.test(wa)) {
+        return Swal.fire("Nomor WA tidak valid", "Harus diawali 08 dan 10–13 digit", "error");
+      }
+
+      if (!buktiFile || buktiFile.size === 0) {
+        return Swal.fire("Wajib Upload", "Bukti pembayaran harus diunggah", "warning");
+      }
+
+      const sent = JSON.parse(localStorage.getItem("formSentNPMs") || "[]");
+      if (sent.includes(npm)) {
+        return Swal.fire("Gagal", "NPM ini sudah pernah kirim!", "error");
+      }
+
+      try {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Mengirim...";
+
+        const token = "7686312873:AAFgoSgH-5A8RyB8tJRzjevPlXI0iQMi8uI";
+        const chatId = "8087861371";
+        let text = '📥 *Formulir Joki Tugas:*\n\n';
+        data.forEach((val, key) => {
+          if (key !== 'Bukti') text += `*${key}*: ${val}\n`;
+        });
+
+        await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+          method: "POST",
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id: chatId, text, parse_mode: "Markdown" })
+        });
+
+        if (buktiFile && buktiFile.size > 0) {
+          const fotoForm = new FormData();
+          fotoForm.append("chat_id", chatId);
+          fotoForm.append("caption", "🖼️ Bukti Pembayaran");
+          fotoForm.append("photo", buktiFile);
+
+          await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {
+            method: "POST",
+            body: fotoForm
+          });
+        }
+
+        sent.push(npm);
+        localStorage.setItem("formSentNPMs", JSON.stringify(sent));
+        document.getElementById("notif-sound").play();
+        Swal.fire("Terkirim!", "Data berhasil dikirim.", "success");
+
+        form.reset();
+        document.getElementById("harga").value = '';
+        document.getElementById("preview-img").style.display = 'none';
+        document.getElementById("nomor-pembayaran").textContent = "";
+        timerEl.textContent = '';
+      } catch {
+        Swal.fire("Error", "Gagal mengirim.", "error");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Kirim";
+      }
+    });
+
+    document.getElementById("previewBtn").addEventListener("click", () => {
+      const form = document.getElementById("form-telegram");
+      const data = new FormData(form);
+      let summary = "<strong>Ringkasan Data:</strong><br><br>";
+      data.forEach((val, key) => {
+        if (key !== "Bukti") summary += `<strong>${key}:</strong> ${val}<br>`;
+      });
+
+      Swal.fire({
+        title: 'Konfirmasi Pengiriman',
+        html: summary,
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonText: 'Kirim',
+        cancelButtonText: 'Batal'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          form.dispatchEvent(new Event('submit'));
+        }
+      });
+    });
+
+    function generatePDF() {
+      const data = new FormData(document.getElementById("form-telegram"));
+      let html = `<h2 style='color:#0056b3'>Formulir Joki Tugas</h2><hr><br>`;
+      data.forEach((val, key) => {
+        if (key !== "Bukti") html += `<p><strong>${key}:</strong> ${val}</p>`;
+      });
+      const nama = data.get("Nama Lengkap")?.trim() || "Tugas";
+      html2pdf().from(html).save(`Formulir_Joki_${nama}.pdf`);
+    }
+  </script>
+</body>
+</html>
