@@ -2,108 +2,120 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <title>Daftar Akun</title>
+  <title>Login & Daftar Mahasiswa</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
+    * { box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f0f2f5;
-      padding: 40px 20px;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #6e8efb, #a777e3);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      animation: fadeIn 1s ease-in-out;
     }
+    @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
     .container {
-      max-width: 400px;
-      margin: auto;
-      background: #fff;
-      padding: 25px 30px;
-      border-radius: 10px;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    input, button {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 2rem;
+      border-radius: 15px;
       width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      font-size: 1rem;
-      border-radius: 5px;
-      border: 1px solid #ccc;
+      max-width: 400px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    }
+    h2 { text-align: center; margin-bottom: 1rem; color: #fff; }
+    input, select {
+      width: 100%; padding: 0.75rem; margin: 0.5rem 0;
+      border: none; border-radius: 8px;
     }
     button {
-      background: #28a745;
-      color: white;
-      border: none;
-      cursor: pointer;
-      transition: 0.3s;
+      width: 100%; padding: 0.75rem;
+      background: #4a00e0; color: white; border: none;
+      border-radius: 8px; cursor: pointer;
+      transition: background 0.3s ease;
     }
-    button:hover {
-      background: #218838;
+    button:hover { background: #3700b3; }
+    .switch {
+      text-align: center; margin-top: 1rem;
+      cursor: pointer; color: #ffd;
     }
-    .link {
-      text-align: center;
-      margin-top: 15px;
-    }
-    .link a {
-      text-decoration: none;
-      color: #007bff;
-    }
-    #loading {
-      text-align: center;
-      color: #555;
-      margin-top: 10px;
-      display: none;
+    .loader {
+      display: none; text-align: center; margin-top: 10px;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>Form Pendaftaran</h2>
-    <form id="form-daftar">
-      <input type="text" id="nama" placeholder="Nama Lengkap" required>
-      <input type="email" id="email" placeholder="Email" required>
-      <input type="password" id="password" placeholder="Password" required>
-      <button type="submit">Daftar</button>
-      <div id="loading">⏳ Mendaftar...</div>
+    <h2 id="formTitle">Login Mahasiswa</h2>
+    <form id="form">
+      <input type="text" id="npm" placeholder="NPM" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <input type="text" id="nama" placeholder="Nama Lengkap" />
+      <input type="text" id="prodi" placeholder="Prodi" />
+      <input type="text" id="nowa" placeholder="No WhatsApp" />
+      <button type="submit" id="submitBtn">Login</button>
+      <div class="loader" id="loader">⏳ Loading...</div>
     </form>
-    <div class="link">
-      Sudah punya akun? <a href="loginn.html">Login di sini</a>
-    </div>
+    <div class="switch" onclick="toggleForm()">Belum punya akun? Daftar</div>
   </div>
 
   <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbzTJr-Q4qk-DEW4n7ukeBS7-XvLquEcnncAH2BDAOw-SLaY6rUoSJ7qEoSWrb0p93dN8A/exec";
-    const form = document.getElementById("form-daftar");
-    const loading = document.getElementById("loading");
+    const form = document.getElementById("form");
+    const loader = document.getElementById("loader");
+    let isLogin = true;
 
-    form.addEventListener("submit", e => {
+    function toggleForm() {
+      isLogin = !isLogin;
+      document.getElementById("formTitle").innerText = isLogin ? "Login Mahasiswa" : "Daftar Mahasiswa";
+      document.getElementById("submitBtn").innerText = isLogin ? "Login" : "Daftar";
+      document.querySelector(".switch").innerText = isLogin ? "Belum punya akun? Daftar" : "Sudah punya akun? Login";
+
+      // Tampilkan/Nonaktifkan field tambahan
+      document.getElementById("nama").style.display = isLogin ? "none" : "block";
+      document.getElementById("prodi").style.display = isLogin ? "none" : "block";
+      document.getElementById("nowa").style.display = isLogin ? "none" : "block";
+    }
+
+    toggleForm(); // jalankan default tampilan login
+
+    form.addEventListener("submit", function(e) {
       e.preventDefault();
-      loading.style.display = "block";
+      loader.style.display = "block";
 
+      const npm = document.getElementById("npm").value.trim();
+      const pw = document.getElementById("password").value.trim();
       const nama = document.getElementById("nama").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
+      const prodi = document.getElementById("prodi").value.trim();
+      const nowa = document.getElementById("nowa").value.trim();
 
-      fetch(scriptURL, {
+      if (isNaN(npm) || isNaN(nowa)) {
+        alert("NPM dan No WA harus berupa angka.");
+        loader.style.display = "none";
+        return;
+      }
+
+      const url = "https://script.google.com/macros/s/AKfycbxONOr_f5emqFnV-QF-D2u6Gjr_ysuBDJjxD7_7kD01W-AOznBsv-d1lr46oBVxVN8/exec";
+      const action = isLogin ? "login" : "register";
+
+      fetch(url, {
         method: "POST",
-        body: JSON.stringify({ action: "register", nama, email, password })
+        body: new URLSearchParams({
+          action, npm, pw, nama, prodi, nowa
+        }),
       })
-      .then(res => res.text())
-      .then(res => {
-        loading.style.display = "none";
-        if (res === "success") {
-          alert("✅ Pendaftaran berhasil! Silakan login.");
-          form.reset();
-          window.location.href = "loginn.html";
-        } else if (res === "duplicate") {
-          alert("⚠️ Email sudah terdaftar.");
+      .then(res => res.json())
+      .then(data => {
+        loader.style.display = "none";
+        if (data.success) {
+          localStorage.setItem("user", JSON.stringify(data.user));
+          window.location.href = "fjoki.html";
         } else {
-          alert("❌ Pendaftaran gagal.");
+          alert(data.message);
         }
-      })
-      .catch(() => {
-        loading.style.display = "none";
-        alert("❌ Terjadi kesalahan jaringan.");
       });
     });
   </script>
