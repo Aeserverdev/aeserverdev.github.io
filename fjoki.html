@@ -1,400 +1,272 @@
 <!DOCTYPE html>
-<html lang="id" data-theme="light">
+<html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Formulir Joki Tugas</title>
+  <title>Dashboard Mahasiswa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <style>
-    :root {
-      --primary: #0056b3;
-      --bg-light: #ffffff;
-      --text-light: #000000;
-      --bg-dark: #1c1c1c;
-      --text-dark: #eeeeee;
-    }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 2rem;
-      background-color: var(--bg);
-      color: var(--text);
-      transition: background-color 0.3s, color 0.3s;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      transition: 0.3s;
+    }
+    .sidebar {
+      width: 250px; background: #16263d; padding: 1rem;
+      display: flex; flex-direction: column; box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+    }
+    .sidebar h2 { text-align: center; color: #7fffd4; margin-bottom: 1rem; }
+    .sidebar button {
+      background: none; border: none; color: #ccc; padding: 0.7rem;
+      text-align: left; cursor: pointer; border-radius: 8px; font-weight: 500;
+    }
+    .sidebar button:hover, .sidebar button.active {
+      background: linear-gradient(45deg, #0072ff, #00c6ff); color: #fff; font-weight: bold;
+    }
+    .content {
+      flex: 1; padding: 2rem; overflow-y: auto;
+    }
+    .topbar {
+      display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;
+    }
+    .toggle-dark {
+      padding: 0.5rem 1rem; background: #7fffd4; color: #000;
+      border-radius: 8px; cursor: pointer; font-weight: bold;
+    }
+    .section { display: none; }
+    .section.active { display: block; }
+    .info-box, input, textarea, select {
+      background: rgba(255,255,255,0.08); padding: 1rem;
+      margin: 0.7rem 0; border-radius: 12px; color: #fff; border: none; width: 100%;
     }
 
-    [data-theme="light"] {
-      --bg: var(--bg-light);
-      --text: var(--text-light);
-    }
-
-    [data-theme="dark"] {
-      --bg: var(--bg-dark);
-      --text: var(--text-dark);
-    }
-
-    .container {
-      max-width: 600px;
-      margin: auto;
-      background: rgba(255,255,255,0.05);
-      border-radius: 12px;
-      padding: 2rem;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-    }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 1rem;
-    }
-
-    label {
-      display: block;
-      margin-top: 10px;
-      font-weight: 600;
-    }
-
-    input, select, button {
-      width: 100%;
-      margin-top: 5px;
-      padding: 10px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-size: 1rem;
-    }
-
-    button {
-      background-color: var(--primary);
-      color: white;
-      cursor: pointer;
-      margin-top: 15px;
-    }
-
-    button:hover {
-      opacity: 0.9;
-    }
-
-    #preview-img {
-      max-width: 100%;
-      display: none;
-      margin-top: 10px;
-      border-radius: 8px;
-    }
-
-    .theme-toggle {
-      position: absolute;
-      right: 20px;
-      top: 20px;
-      cursor: pointer;
-      font-size: 1.5rem;
-    }
-
-    .logo {
-      display: block;
-      margin: auto;
-      max-width: 100px;
-    }
-
-    #timer {
-      margin-top: 1rem;
-      font-style: italic;
-      color: #d63384;
-    }
-
-    .qr-container {
-      text-align: center;
-      margin-top: 1.5rem;
-    }
-
-    .qr-container img {
-      width: 100px;
-    }
-
-    #nomor-pembayaran {
-      margin-top: 5px;
+    /* ✅ Tampilan Khusus Select */
+    select.info-box {
+      background: linear-gradient(45deg, #00c6ff, #0072ff);
+      color: #fff;
       font-weight: bold;
-      color: #0c6efd;
     }
-    .footer {
-      text-align: center;
-      margin-top: 2rem;
-      font-size: 0.9rem;
-      color: #666;
+    select.info-box option {
+      background: #16263d;
+      color: #fff;
+    }
+
+    .btn {
+      background: linear-gradient(45deg, #00c6ff, #0072ff);
+      color: #fff; border: none; padding: 0.7rem 1.5rem;
+      font-size: 1rem; font-weight: 600; border-radius: 10px; cursor: pointer;
+    }
+    .card-profile {
+      text-align: center; background: rgba(255,255,255,0.05);
+      padding: 2rem; border-radius: 16px; max-width: 400px; margin: auto;
+    }
+    .card-profile img { width: 100px; border-radius: 50%; margin-bottom: 1rem; border: 3px solid #7fffd4; }
+
+    table {
+      width: 100%; border-collapse: collapse; background: rgba(255,255,255,0.05);
+    }
+    th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ffffff22; }
+    th { background: rgba(255,255,255,0.1); }
+    .status-badge {
+      padding: 4px 10px; border-radius: 10px; font-weight: bold; text-transform: capitalize;
+    }
+    .status-menunggu { background: #ff9800; color: #fff; }
+    .status-proses   { background: #2196f3; color: #fff; }
+    .status-selesai  { background: #4caf50; color: #fff; }
+    .status-batal    { background: #f44336; color: #fff; }
+
+    .dark-mode { background: #121212; color: #eee; }
+    .dark-mode .sidebar { background: #1e1e2f; }
+    .dark-mode .info-box, .dark-mode input, .dark-mode textarea, .dark-mode select {
+      background: rgba(255,255,255,0.1); color: #fff;
+    }
+    .dark-mode .toggle-dark { background: #00c6ff; color: #000; }
+    .dark-mode select.info-box option {
+      background: #2a2a3a;
+      color: #7fffd4;
+    }
+
+    @media(max-width:768px) {
+      body { flex-direction: column; }
+      .sidebar { width: 100%; flex-direction: row; overflow-x: auto; }
+      .sidebar button { flex: 1; text-align: center; }
     }
   </style>
 </head>
 <body>
-  <div class="theme-toggle" onclick="toggleDark()">🌓</div>
-
-  <div class="container">
-    <img src="https://smart.universitasmerangin.ac.id/storage/uploads/setting/tHDM9h1AAps6ZEmH4fTl5uoLXjve8DrDwK8ps4XC.png" class="logo" alt="Logo Kampus" />
-    <h1>Formulir Joki Tugas</h1>
-
-    <form id="form-telegram">
-      <label>Nama Lengkap
-        <input name="Nama Lengkap" required>
-      </label>
-
-      <label>NPM
-        <input name="NPM" required pattern="^\d{5,20}$" placeholder="Contoh: 22210012">
-      </label>
-
-      <label>Program Studi
-        <select name="Prodi" required>
-          <option value="" disabled selected>Pilih Program Studi</option>
-          <option>TEKNOLOGI INFORMASI</option>
-          <option>SISTEM INFORMASI</option>
-          <option>BAHASA DAN SASTRA INDONESIA</option>
-          <option>BAHASA INGGRIS</option>
-          <option>BIOLOGI</option>
-          <option>EKONOMI</option>
-          <option>HUKUM</option>
-          <option>PGSD</option>
-          <option>PGPAUD</option>
-          <option>PLS</option>
-          <option>HUKUM BISNIS DIGITAL</option>
-        </select>
-      </label>
-
-      <label>WhatsApp
-        <input name="WhatsApp" required placeholder="Contoh: 08xxxxxxxxxx" pattern="^08\d{8,11}$">
-      </label>
-
-      <label>Jenis Tugas
-        <select id="jenis-tugas" name="Jenis Tugas" required>
-          <option value="">-- Pilih --</option>
-          <option>Makalah</option>
-          <option>PPT Reguler</option>
-          <option>PPT Premium</option>
-          <option>Animacy Adobe Flash</option>
-          <option>Website</option>
-          <option>Koding</option>
-        </select>
-      </label>
-
-      <label>Harga
-        <input id="harga" name="Harga" readonly>
-      </label>
-
-      <div id="metode-container">
-        <label for="metode">Metode Pembayaran:</label>
-        <select id="metode" name="Metode Pembayaran" required onchange="updateMetode()">
-          <option value="" disabled selected>-- Pilih Metode --</option>
-          <option value="DANA">DANA</option>
-          <option value="OVO">OVO</option>
-          <option value="Gopay">Gopay</option>
-        </select>
-        <p id="nomor-pembayaran"></p>
+  <div class="sidebar">
+    <h2>👨‍🎓 Mahasiswa</h2>
+    <button onclick="showSection('profil')" class="active">📄 Profil</button>
+    <button onclick="showSection('riwayat')">📚 Riwayat</button>
+    <button onclick="showSection('pesanan')">📝 Pesanan</button>
+    <button onclick="logout()">🚪 Logout</button>
+  </div>
+  <div class="content">
+    <div class="topbar">
+      <h1>Dashboard</h1>
+      <div class="toggle-dark" onclick="toggleTheme()">🌙 Mode</div>
+    </div>
+    <div id="profil" class="section active">
+      <div class="card-profile">
+        <img src="https://ui-avatars.com/api/?name=Mahasiswa" alt="Foto Mahasiswa">
+        <h3 id="nama"></h3>
+        <p><strong>NPM:</strong> <span id="npm"></span></p>
+        <p><strong>Prodi:</strong> <span id="prodi"></span></p>
+        <p><strong>No WA:</strong> <span id="nowa"></span></p>
       </div>
-
-      <label>Tanggal Ambil
-        <input type="date" id="tglAmbil" name="Tanggal Ambil" required>
-      </label>
-      <p id="timer"></p>
-
-      <label>Bukti Pembayaran (wajib)
-        <input type="file" id="bukti-input" name="Bukti" accept="image/*" required>
-        <img id="preview-img">
-      </label>
-
-      <button type="button" id="previewBtn">Lihat Ringkasan</button>
-      <button type="submit" id="submitBtn">Kirim</button>
-      <button type="button" onclick="generatePDF()">Export PDF</button>
-    </form>
-
-    <div class="qr-container">
-      <p>Pindai untuk informasi lebih lanjut</p>
-      <img src="https://wa.me/628994840203" alt="QR Code">
+    </div>
+    <div id="riwayat" class="section">
+      <h2>📚 Riwayat Joki Tugas</h2>
+      <input type="text" placeholder="🔍 Cari tugas..." class="info-box" oninput="filterRiwayat()" id="searchRiwayat">
+      <div class="info-box" id="tabelRiwayat">Memuat data...</div>
+    </div>
+    <div id="pesanan" class="section">
+      <h2>📝 Tambah Pesanan</h2>
+      <form id="formPesanan">
+        <select id="jenis" class="info-box" required onchange="updateHarga()">
+          <option value="">Pilih jenis tugas</option>
+          <option value="Makalah">Makalah</option>
+          <option value="PPT">PPT</option>
+          <option value="PPT Premium">PPT Premium</option>
+          <option value="Animacy Adobe Flash">Animacy Adobe Flash</option>
+          <option value="Koding">Koding</option>
+          <option value="Website">Website</option>
+        </select>
+        <input id="harga" class="info-box" readonly placeholder="Harga otomatis" />
+        <textarea id="deskripsi" class="info-box" placeholder="Deskripsi tugas" required></textarea>
+        <input type="date" id="deadline" class="info-box" required />
+        <button class="btn" type="submit">Kirim Pesanan</button>
+      </form>
+      <div class="info-box" id="statusPesanan" style="display:none"></div>
     </div>
   </div>
-<div class="footer"> &copy; 2025 Renaldi. All Rights Reserved.</div>
-  <audio id="notif-sound" src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg" preload="auto"></audio>
-
   <script>
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user) location.href = "index.html";
+    document.getElementById("nama").textContent = user.nama;
+    document.getElementById("npm").textContent = user.npm;
+    document.getElementById("prodi").textContent = user.prodi;
+    document.getElementById("nowa").textContent = user.nowa;
+
+    function showSection(id) {
+      document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+      document.querySelectorAll(".sidebar button").forEach(b => b.classList.remove("active"));
+      document.querySelector(`.sidebar button[onclick*="${id}"]`).classList.add("active");
+      if (id === "riwayat") loadRiwayat();
+    }
+
+    function toggleTheme() {
+      const isDark = document.body.classList.toggle("dark-mode");
+      localStorage.setItem("theme", isDark ? "dark" : "light");
+    }
+    if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark-mode");
+
+    function logout() {
+      localStorage.removeItem("user");
+      Swal.fire({ icon: 'info', title: 'Logout berhasil', timer: 2000, showConfirmButton: false });
+      setTimeout(() => location.href = "botjokitugas.html", 1500);
+    }
+
+    function showNotif(icon, title, text = '') {
+      Swal.fire({ icon, title, text, toast: true, position: 'top-end', timer: 4000, showConfirmButton: false });
+    }
+
     const hargaMap = {
-      "makalah": 20000,
-      "ppt reguler": 20000,
-      "ppt premium": 45000,
-      "animacy adobe flash": 50000,
-      "website": 63000,
-      "koding": 45000
+      "Makalah": 20000, "PPT": 20000, "PPT Premium": 45000,
+      "Animacy Adobe Flash": 50000, "Koding": 60000, "Website": 100000
     };
-
-    document.getElementById("jenis-tugas").addEventListener("change", () => {
-      const val = document.getElementById("jenis-tugas").value.toLowerCase();
-      document.getElementById("harga").value = "Rp" + (hargaMap[val] || 0).toLocaleString("id-ID");
-    });
-
-    function updateMetode() {
-      const metode = document.getElementById("metode").value;
-      const output = document.getElementById("nomor-pembayaran");
-
-      switch (metode) {
-        case "DANA":
-          output.textContent = "🔹 Nomor DANA: 0813-4872-2325";
-          break;
-        case "OVO":
-          output.textContent = "🔸 Nomor OVO: ";
-          break;
-        case "Gopay":
-          output.textContent = "🟢 Nomor Gopay: ";
-          break;
-        default:
-          output.textContent = "";
-      }
+    function updateHarga() {
+      const jenis = document.getElementById("jenis").value;
+      const harga = hargaMap[jenis] || 0;
+      document.getElementById("harga").value = `Rp ${harga.toLocaleString("id-ID")}`;
     }
 
-    document.getElementById("bukti-input").addEventListener("change", e => {
-      const file = e.target.files[0];
-      if (!file) return;
-      if (file.size > 2 * 1024 * 1024 || !file.type.startsWith("image/")) {
-        Swal.fire("Bukti tidak valid", "Gunakan gambar (maks 2MB)", "error");
-        e.target.value = "";
-        document.getElementById("preview-img").style.display = "none";
-        return;
-      }
-
-      const reader = new FileReader();
-      reader.onload = ev => {
-        document.getElementById("preview-img").src = ev.target.result;
-        document.getElementById("preview-img").style.display = "block";
-      };
-      reader.readAsDataURL(file);
-    });
-
-    function toggleDark() {
-      const html = document.documentElement;
-      const newTheme = html.dataset.theme === "dark" ? "light" : "dark";
-      html.dataset.theme = newTheme;
-      localStorage.setItem("theme", newTheme);
+    async function kirimTelegram(data) {
+      const TELEGRAM_BOT_TOKEN = "7686312873:AAFgoSgH-5A8RyB8tJRzjevPlXI0iQMi8uI";
+      const CHAT_ID = "8087861371";
+      const pesan = `📥 Pesanan Baru\nNama: ${data.nama}\nNPM: ${data.npm}\nProdi: ${data.prodi}\nWA: ${data.nowa}\nJenis: ${data.jenis}\nDeadline: ${data.deadline}\nID: ${data.trackingID}`;
+      const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+      await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ chat_id: CHAT_ID, text: pesan })
+      });
     }
 
-    document.addEventListener("DOMContentLoaded", () => {
-      const saved = localStorage.getItem("theme");
-      if (saved) document.documentElement.dataset.theme = saved;
-    });
-
-    const tglAmbil = document.getElementById("tglAmbil");
-    const timerEl = document.getElementById("timer");
-    tglAmbil.min = new Date().toISOString().split("T")[0];
-
-    function updateCountdown() {
-      const tgl = new Date(tglAmbil.value);
-      if (isNaN(tgl)) return timerEl.textContent = "";
-      const sisa = tgl - new Date();
-      if (sisa < 0) return timerEl.textContent = "⚠️ Tanggal lewat!";
-      const d = Math.floor(sisa / 86400000);
-      const h = Math.floor((sisa % 86400000) / 3600000);
-      const m = Math.floor((sisa % 3600000) / 60000);
-      timerEl.textContent = `⏳ Sisa waktu: ${d} hari ${h} jam ${m} menit`;
-    }
-    setInterval(updateCountdown, 1000);
-    tglAmbil.addEventListener("change", updateCountdown);
-
-    document.getElementById("form-telegram").addEventListener("submit", async e => {
+    document.getElementById("formPesanan").addEventListener("submit", async e => {
       e.preventDefault();
-      const form = e.target;
-      const data = new FormData(form);
-      const npm = data.get("NPM").trim();
-      const wa = data.get("WhatsApp").trim();
-      const buktiFile = data.get("Bukti");
-      const submitBtn = document.getElementById("submitBtn");
-
-      // Validasi tambahan
-      if (!/^\d{5,20}$/.test(npm)) {
-        return Swal.fire("NPM tidak valid", "Harus angka 5–20 digit", "error");
-      }
-
-      if (!/^08\d{8,11}$/.test(wa)) {
-        return Swal.fire("Nomor WA tidak valid", "Harus diawali 08 dan 10–13 digit", "error");
-      }
-
-      if (!buktiFile || buktiFile.size === 0) {
-        return Swal.fire("Wajib Upload", "Bukti pembayaran harus diunggah", "warning");
-      }
-
-      const sent = JSON.parse(localStorage.getItem("formSentNPMs") || "[]");
-      if (sent.includes(npm)) {
-        return Swal.fire("Gagal", "NPM ini sudah pernah kirim!", "error");
-      }
-
+      const jenis = document.getElementById("jenis").value;
+      const deskripsi = document.getElementById("deskripsi").value;
+      const deadline = document.getElementById("deadline").value;
+      const trackingID = "TRK" + Date.now();
+      const data = { trackingID, ...user, jenis, deskripsi, deadline };
+      const statusBox = document.getElementById("statusPesanan");
+      statusBox.style.display = "block";
+      statusBox.textContent = "Mengirim pesanan...";
       try {
-        submitBtn.disabled = true;
-        submitBtn.textContent = "Mengirim...";
-
-        const token = "7686312873:AAFgoSgH-5A8RyB8tJRzjevPlXI0iQMi8uI";
-        const chatId = "8087861371";
-        let text = '📥 *Formulir Joki Tugas:*\n\n';
-        data.forEach((val, key) => {
-          if (key !== 'Bukti') text += `*${key}*: ${val}\n`;
-        });
-
-        await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        await fetch("https://script.google.com/macros/s/AKfycbw1MIjl1fdn6LovwgbarV919fB3oBM4-eUZjWhbmWrXJcA5rOSgBPPdmc_CjjyNRH-_/exec", {
           method: "POST",
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ chat_id: chatId, text, parse_mode: "Markdown" })
+          body: new URLSearchParams({ action: "tambahPesanan", data: JSON.stringify(data) })
         });
-
-        if (buktiFile && buktiFile.size > 0) {
-          const fotoForm = new FormData();
-          fotoForm.append("chat_id", chatId);
-          fotoForm.append("caption", "🖼️ Bukti Pembayaran");
-          fotoForm.append("photo", buktiFile);
-
-          await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {
-            method: "POST",
-            body: fotoForm
-          });
-        }
-
-        sent.push(npm);
-        localStorage.setItem("formSentNPMs", JSON.stringify(sent));
-        document.getElementById("notif-sound").play();
-        Swal.fire("Terkirim!", "Data berhasil dikirim.", "success");
-
-        form.reset();
-        document.getElementById("harga").value = '';
-        document.getElementById("preview-img").style.display = 'none';
-        document.getElementById("nomor-pembayaran").textContent = "";
-        timerEl.textContent = '';
-      } catch {
-        Swal.fire("Error", "Gagal mengirim.", "error");
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = "Kirim";
+        await kirimTelegram(data);
+        document.getElementById("formPesanan").reset();
+        document.getElementById("harga").value = "";
+        statusBox.innerHTML = `✅ Terkirim!<br>ID: ${data.trackingID}`;
+        showNotif("success", "Pesanan Terkirim", `ID: ${data.trackingID}`);
+        navigator.clipboard.writeText(data.trackingID);
+        showSection("riwayat");
+      } catch (err) {
+        console.error(err);
+        statusBox.textContent = "❌ Gagal mengirim.";
+        showNotif("error", "Gagal Mengirim", "Periksa koneksi atau coba lagi.");
       }
     });
 
-    document.getElementById("previewBtn").addEventListener("click", () => {
-      const form = document.getElementById("form-telegram");
-      const data = new FormData(form);
-      let summary = "<strong>Ringkasan Data:</strong><br><br>";
-      data.forEach((val, key) => {
-        if (key !== "Bukti") summary += `<strong>${key}:</strong> ${val}<br>`;
-      });
+    let semuaRiwayat = [];
+    async function loadRiwayat() {
+      const box = document.getElementById("tabelRiwayat");
+      box.textContent = "Memuat data...";
+      try {
+        const res = await fetch(`https://script.google.com/macros/s/AKfycbwa56YiuCHxD1vGoiPKclM7B4_JZtuHjFYSp0ffDEz4MlripQRVGjBPGPyw2yMcO6kZHg/exec?action=getRiwayat&npm=${user.npm}`);
+        const data = await res.json();
+        semuaRiwayat = data;
+        if (!Array.isArray(data) || data.length === 0) return box.innerHTML = "<i>Belum ada data.</i>";
+        tampilkanRiwayat(data);
+      } catch (e) {
+        box.innerHTML = "<i>Gagal memuat data.</i>";
+        showNotif("error", "Gagal Memuat Riwayat");
+      }
+    }
 
-      Swal.fire({
-        title: 'Konfirmasi Pengiriman',
-        html: summary,
-        icon: 'info',
-        showCancelButton: true,
-        confirmButtonText: 'Kirim',
-        cancelButtonText: 'Batal'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          form.dispatchEvent(new Event('submit'));
-        }
+    function tampilkanRiwayat(data) {
+      let html = "<table><tr><th>ID</th><th>Jenis</th><th>Deadline</th><th>Status</th></tr>";
+      data.forEach(r => {
+        const s = r.status.toLowerCase();
+        let cls = "status-menunggu";
+        if (s.includes("proses")) cls = "status-proses";
+        else if (s.includes("selesai")) cls = "status-selesai";
+        else if (s.includes("batal")) cls = "status-batal";
+        html += `<tr><td>${r.trackingID}</td><td>${r.jenis}</td><td>${r.deadline}</td><td><span class="status-badge ${cls}">${r.status}</span></td></tr>`;
       });
-    });
+      html += "</table>";
+      document.getElementById("tabelRiwayat").innerHTML = html;
+    }
 
-    function generatePDF() {
-      const data = new FormData(document.getElementById("form-telegram"));
-      let html = `<h2 style='color:#0056b3'>Formulir Joki Tugas</h2><hr><br>`;
-      data.forEach((val, key) => {
-        if (key !== "Bukti") html += `<p><strong>${key}:</strong> ${val}</p>`;
-      });
-      const nama = data.get("Nama Lengkap")?.trim() || "Tugas";
-      html2pdf().from(html).save(`Formulir_Joki_${nama}.pdf`);
+    function filterRiwayat() {
+      const q = document.getElementById("searchRiwayat").value.toLowerCase();
+      const f = semuaRiwayat.filter(r =>
+        r.trackingID.toLowerCase().includes(q) ||
+        r.jenis.toLowerCase().includes(q) ||
+        r.deadline.toLowerCase().includes(q) ||
+        r.status.toLowerCase().includes(q)
+      );
+      tampilkanRiwayat(f);
     }
   </script>
 </body>
