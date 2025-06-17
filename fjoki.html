@@ -474,13 +474,13 @@
 
   async function kirimTelegramDenganGambar(data, file) {
   const TELEGRAM_BOT_TOKEN = "7686312873:AAFgoSgH-5A8RyB8tJRzjevPlXI0iQMi8uI";
-  const CHAT_ID = "1002853719892";
+  const GROUP_CHAT_ID = "-1002853719892"; // Supergroup
+  const ADMIN_CHAT_ID = "7163012679"; // Chat ID pribadi (misal: RENALDI)
 
   if (!file || !file.type.startsWith("image/")) {
     throw new Error("File tidak valid. Harus berupa gambar.");
   }
 
-  const formData = new FormData();
   const pesan = `
 📥 *Pesanan Baru Masuk*
 👤 Nama: *${data.nama}*
@@ -497,20 +497,39 @@
 🆔 Tracking ID: *${data.trackingID}*
 `.trim();
 
-  formData.append("chat_id", CHAT_ID);
+  // 1. Kirim ke grup supergroup (dengan gambar)
+  const formData = new FormData();
+  formData.append("chat_id", GROUP_CHAT_ID);
   formData.append("caption", pesan);
   formData.append("photo", file);
   formData.append("parse_mode", "Markdown");
 
-  const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`;
-  const response = await fetch(url, {
+  const urlPhoto = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`;
+  const responsePhoto = await fetch(urlPhoto, {
     method: "POST",
     body: formData
   });
 
-  if (!response.ok) {
-    const errText = await response.text();
-    throw new Error(`Telegram Error: ${errText}`);
+  if (!responsePhoto.ok) {
+    const errText = await responsePhoto.text();
+    throw new Error(`Telegram Group Error: ${errText}`);
+  }
+
+  // 2. Kirim ke admin pribadi (teks saja)
+  const urlText = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+  const responseText = await fetch(urlText, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      chat_id: ADMIN_CHAT_ID,
+      text: pesan,
+      parse_mode: "Markdown"
+    })
+  });
+
+  if (!responseText.ok) {
+    const errText = await responseText.text();
+    throw new Error(`Telegram Admin Error: ${errText}`);
   }
 }
 
