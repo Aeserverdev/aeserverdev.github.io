@@ -279,28 +279,37 @@ th {
 <form id="formPesanan">
   <div class="info-box">
     <label>Jenis Tugas</label>
-<select id="jenis" required onchange="updateHarga()">
-  <option value="">-- Pilih Jenis Tugas --</option>
-  <option value="MAKALAH">MAKALAH</option>
-  <option value="PPT">PPT</option>
-  <option value="PPT PREMIUM">PPT PREMIUM</option>
-  <option value="WEBSITE">WEBSITE</option>
-  <option value="KODING">KODING</option>
-  <option value="ANIMACY">ANIMACY</option>
-  <option value="BIKIN APLIKASI">BIKIN APLIKASI</option>
-</select>
+    <select id="jenis" required onchange="updateHarga()">
+      <option value="">-- Pilih Jenis Tugas --</option>
+      <option value="MAKALAH">MAKALAH</option>
+      <option value="PPT">PPT</option>
+      <option value="PPT PREMIUM">PPT PREMIUM</option>
+      <option value="WEBSITE">WEBSITE</option>
+      <option value="KODING">KODING</option>
+      <option value="ANIMACY">ANIMACY</option>
+      <option value="BIKIN APLIKASI">BIKIN APLIKASI</option>
+    </select>
   </div>
 
-<div class="info-box">
-  <label>Pilih Admin Joki</label>
-  <select id="adminJoki" required>
-    <option value="">-- Pilih Admin Joki --</option>
-    <option value="RENALDI">RENALDI</option>
-    <option value="AFRIZAL">AFRIZAL</option>
-    <option value="ABDUL HAKIM">ABDUL HAKIM</option>
-    <option value="AIDIL ANWAR">AIDIL ANWAR</option>
-  </select>
-</div>
+  <div class="info-box">
+    <label>Pilih Admin Joki</label>
+    <select id="adminJoki" required>
+      <option value="">-- Pilih Admin Joki --</option>
+      <option value="RENALDI">RENALDI</option>
+      <option value="AFRIZAL">AFRIZAL</option>
+      <option value="ABDUL HAKIM">ABDUL HAKIM</option>
+      <option value="AIDIL ANWAR">AIDIL ANWAR</option>
+    </select>
+  </div>
+
+  <div class="info-box">
+    <label>Metode Pembayaran</label>
+    <input id="metode" readonly>
+  </div>
+
+  <div class="info-box" id="infoDana" style="display:none;">
+    <strong>Nomor Dana:</strong> <span id="nomorDana"></span>
+  </div>
 
   <div class="info-box">
     <label>Deskripsi</label>
@@ -310,20 +319,6 @@ th {
   <div class="info-box">
     <label>Deadline</label>
     <input type="date" id="deadline" required>
-  </div>
-
-  <div class="info-box">
-    <label>Metode Pembayaran</label>
-    <select id="metode" onchange="tampilkanInfoPembayaran()" required>
-      <option value="">-- Pilih Metode --</option>
-      <option value="Dana">Dana</option>
-      <option value="Transfer Bank">Transfer Bank</option>
-      <option value="Gopay">Gopay</option>
-    </select>
-  </div>
-
-  <div class="info-box" id="infoPembayaranDana" style="display:none">
-    <strong>Nomor Dana:</strong> 081348722325
   </div>
 
   <div class="info-box">
@@ -342,6 +337,7 @@ th {
 </form>
 
 <div class="info-box" id="statusPesanan" style="display:none"></div>
+</div>
 
   </div>  <div id="pembayaran" class="section">  
   <h2>💳 Riwayat Pembayaran</h2>  
@@ -349,7 +345,8 @@ th {
   <div class="info-box" id="tabelPembayaran">Memuat data...</div>  
 </div>
 
-  </div>  <script>  
+  </div>  
+<script>  
   // Inisialisasi  
   const user = JSON.parse(localStorage.getItem("user"));  
   if (!user) location.href = "botjokitugas.html";  
@@ -419,6 +416,7 @@ function updateHarga() {
 🗓 Deadline: *${data.deadline}*
 👨‍🏫 Admin Joki: *${data.adminJoki}*
 💳 Metode Pembayaran: *${data.metode}*
+📱 Nomor Dana: *${data.dana}*
 💰 Harga: *${data.harga}*
 🆔 Tracking ID: *${data.trackingID}*
 `.trim();
@@ -469,7 +467,8 @@ trim();
   deadline,
   metode,
   harga,
-  adminJoki
+  adminJoki,
+  dana: nomorDanaMap[adminJoki] || "-"
 };
 
     const statusPesanan = document.getElementById("statusPesanan");
@@ -567,5 +566,29 @@ trim();
     );  
     tampilkanPembayaran(f);  
   }  
+  
+  const nomorDanaMap = {
+  "RENALDI": "081348722325",
+  "AFRIZAL": "085182489261",
+  "ABDUL HAKIM": "082279458613",
+  "AIDIL ANWAR": "085764534425"
+};
+
+document.getElementById("adminJoki").addEventListener("change", function () {
+  const admin = this.value;
+  const nomor = nomorDanaMap[admin];
+  const metodeInput = document.getElementById("metode");
+  const danaBox = document.getElementById("infoDana");
+
+  if (nomor) {
+    metodeInput.value = "Dana";
+    danaBox.style.display = "block";
+    document.getElementById("nomorDana").textContent = nomor;
+  } else {
+    metodeInput.value = "";
+    danaBox.style.display = "none";
+    document.getElementById("nomorDana").textContent = "";
+  }
+});
 </script>  </body>  
 </html>
