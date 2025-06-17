@@ -388,61 +388,90 @@ function updateHarga() {
   document.getElementById("harga").value = harga ? `Rp ${harga.toLocaleString("id-ID")}` : '';
 }
   
-  function tampilkanInfoPembayaran() {  
-    const metode = document.getElementById("metode").value;  
-    document.getElementById("infoPembayaranDana").style.display = metode === "Dana" ? "block" : "none";  
-  }  
-  
-  async function kirimTelegramDenganGambar(data, file) {  
-    const TELEGRAM_BOT_TOKEN = "7686312873:AAFgoSgH-5A8RyB8tJRzjevPlXI0iQMi8uI";  
-    const CHAT_ID = "8087861371";  
-    const formData = new FormData();  
-    const pesan = `📥 *Pesanan Baru dengan Bukti Pembayaran*\nNama: ${data.nama}\nNPM: ${data.npm}\nProdi: ${data.prodi}\nWA: ${data.nowa}\nJenis: ${data.jenis}\nDeadline: ${data.deadline}\nHarga: ${data.harga}\nMetode: ${data.metode}\nID: ${data.trackingID}`;  
-    formData.append("chat_id", CHAT_ID);  
-    formData.append("caption", pesan);  
-    formData.append("photo", file);  
-    formData.append("parse_mode", "Markdown");  
-    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`;  
-    await fetch(url, { method: "POST", body: formData });  
-  }  
-  
-  document.getElementById("formPesanan").addEventListener("submit", async e => {  
-    e.preventDefault();  
-    const jenis = document.getElementById("jenis").value.trim();  
-    const deskripsi = document.getElementById("deskripsi").value.trim();  
-    const deadline = document.getElementById("deadline").value;  
-    const metode = document.getElementById("metode").value;  
-    const harga = document.getElementById("harga").value;  
-    const trackingID = "TRK" + Date.now();  
-    const data = {  
-      trackingID,  
-      nama: user.nama,  
-      npm: user.npm,  
-      prodi: user.prodi,  
-      nowa: user.nowa,  
-      jenis,  
-      deskripsi,  
-      deadline,  
-      metode,  
-      harga  
-    };  
-    const fileInput = document.getElementById("bukti");  
-    const file = fileInput.files[0];  
-    const statusPesanan = document.getElementById("statusPesanan");  
-    statusPesanan.style.display = "block";  
-    statusPesanan.innerText = "Mengirim pesanan ke Telegram...";  
-    try {  
-      await kirimTelegramDenganGambar(data, file);  
-      document.getElementById("formPesanan").reset();  
-      statusPesanan.innerHTML = `✅ Pesanan + bukti berhasil dikirim!<br>ID: ${data.trackingID}`;  
-      navigator.clipboard.writeText(data.trackingID);  
-      showNotif("success", "Pesanan & Bukti Terkirim", `Tracking ID: ${data.trackingID}`);  
-    } catch (error) {  
-      statusPesanan.innerText = "❌ Gagal mengirim ke Telegram. Coba lagi.";  
-      showNotif("error", "Gagal Terkirim", error.message);  
-    }  
-  });  
-  
+  async function kirimTelegramDenganGambar(data, file) {
+    const TELEGRAM_BOT_TOKEN = "7686312873:AAFgoSgH-5A8RyB8tJRzjevPlXI0iQMi8uI";
+    const CHAT_ID = "8087861371";
+
+    if (!file || !file.type.startsWith("image/")) {
+      throw new Error("File tidak valid. Harus berupa gambar.");
+    }
+
+    const formData = new FormData();
+    const pesan = `
+📥 *Pesanan Baru Masuk*
+👤 Nama: *${data.nama}*
+🎓 NPM: *${data.npm}*
+🏫 Prodi: *${data.prodi}*
+📱 WhatsApp: *${data.nowa}*
+📝 Jenis Tugas: *${data.jenis}*
+📄 Deskripsi: *${data.deskripsi}*
+🗓 Deadline: *${data.deadline}*
+💳 Metode Pembayaran: *${data.metode}*
+💰 Harga: *${data.harga}*
+🆔 Tracking ID: *${data.trackingID}*
+    `.trim();
+
+    formData.append("chat_id", CHAT_ID);
+    formData.append("caption", pesan);
+    formData.append("photo", file);
+    formData.append("parse_mode", "Markdown");
+
+    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`;
+    const response = await fetch(url, {
+      method: "POST",
+      body: formData
+    });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      throw new Error(`Telegram Error: ${errText}`);
+    }
+  }
+
+  document.getElementById("formPesanan").addEventListener("submit", async e => {
+    e.preventDefault();
+
+    const jenis = document.getElementById("jenis").value.trim();
+    const deskripsi = document.getElementById("deskripsi").value.trim();
+    const deadline = document.getElementById("deadline").value;
+    const metode = document.getElementById("metode").value;
+    const harga = document.getElementById("harga").value;
+    const trackingID = "TRK" + Date.now();
+    const fileInput = document.getElementById("bukti");
+    const file = fileInput.files[0];
+
+    if (!file) {
+      return showNotif("error", "Upload Gagal", "Mohon unggah bukti pembayaran berupa gambar.");
+    }
+
+    const data = {
+      trackingID,
+      nama: user.nama,
+      npm: user.npm,
+      prodi: user.prodi,
+      nowa: user.nowa,
+      jenis,
+      deskripsi,
+      deadline,
+      metode,
+      harga
+    };
+
+    const statusPesanan = document.getElementById("statusPesanan");
+    statusPesanan.style.display = "block";
+    statusPesanan.innerText = "📡 Mengirim pesanan ke Telegram...";
+
+    try {
+      await kirimTelegramDenganGambar(data, file);
+      document.getElementById("formPesanan").reset();
+      statusPesanan.innerHTML = `✅ Pesanan & bukti berhasil dikirim!<br><strong>ID:</strong> ${trackingID}`;
+      navigator.clipboard.writeText(trackingID);
+      showNotif("success", "Terkirim!", `Tracking ID: ${trackingID}`);
+    } catch (error) {
+      statusPesanan.innerHTML = "❌ Gagal mengirim ke Telegram.<br>Silakan coba lagi.";
+      showNotif("error", "Gagal", error.message);
+    }
+  });
   
   let semuaRiwayat = [];  
   async function loadRiwayat() {  
