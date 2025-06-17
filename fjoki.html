@@ -279,15 +279,16 @@ th {
 <form id="formPesanan">
   <div class="info-box">
     <label>Jenis Tugas</label>
-    <select id="jenis" required onchange="updateHarga()">
-      <option value="">-- Pilih Jenis Tugas --</option>
-      <option value="Makalah">Makalah</option>
-      <option value="PPT">PPT</option>
-      <option value="PPT Premium">PPT Premium</option>
-      <option value="Animacy Adobe Flash">Animacy Adobe Flash</option>
-      <option value="Koding">Koding</option>
-      <option value="Website">Website</option>
-    </select>
+<select id="jenis" required onchange="updateHarga()">
+  <option value="">-- Pilih Jenis Tugas --</option>
+  <option value="MAKALAH">MAKALAH</option>
+  <option value="PPT">PPT</option>
+  <option value="PPT PREMIUM">PPT PREMIUM</option>
+  <option value="WEBSITE">WEBSITE</option>
+  <option value="KODING">KODING</option>
+  <option value="ANIMACY">ANIMACY</option>
+  <option value="BIKIN APLIKASI">BIKIN APLIKASI</option>
+</select>
   </div>
 
   <div class="info-box">
@@ -372,12 +373,13 @@ th {
   }  
   
   const hargaMap = {
-  "Makalah": 20000,
+  "MAKALAH": 20000,
   "PPT": 20000,
-  "PPT Premium": 45000,
-  "Animacy Adobe Flash": 50000,
-  "Koding": 60000,
-  "Website": 100000
+  "PPT PREMIUM": 45000,
+  "WEBSITE": 100000,
+  "KODING": 60000,
+  "ANIMACY": 50000,
+  "BIKIN APLIKASI": 500000
 };
 
 function updateHarga() {
