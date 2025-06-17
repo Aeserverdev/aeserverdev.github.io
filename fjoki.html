@@ -279,56 +279,61 @@
     </div>
 
     <div id="pesanan" class="section">
-      <h2>📝 Tambah Pesanan</h2>
-      <form id="formPesanan">
-        <div class="info-box">
-          <label>Jenis Tugas</label>
-          <input id="jenis" list="daftarJenis" required oninput="updateHarga()">
-          <datalist id="daftarJenis">
-            <option value="Makalah">
-            <option value="PPT">
-            <option value="PPT Premium">
-            <option value="Animacy Adobe Flash">
-            <option value="Koding">
-            <option value="Website">
-          </datalist>
-        </div>
+    <h2>📝 Tambah Pesanan</h2>
+    <form id="formPesanan">
+      <div class="info-box">
+        <label>Jenis Tugas</label>
+        <input id="jenis" list="daftarJenis" required oninput="updateHarga()">
+        <datalist id="daftarJenis">
+          <option value="Makalah">
+          <option value="PPT">
+          <option value="PPT Premium">
+          <option value="Animacy Adobe Flash">
+          <option value="Koding">
+          <option value="Website">
+        </datalist>
+      </div>
 
-        <div class="info-box">
-          <label>Deskripsi</label>
-          <textarea id="deskripsi" required></textarea>
-        </div>
+      <div class="info-box">
+        <label>Deskripsi</label>
+        <textarea id="deskripsi" required></textarea>
+      </div>
 
-        <div class="info-box">
-          <label>Deadline</label>
-          <input type="date" id="deadline" required>
-        </div>
+      <div class="info-box">
+        <label>Deadline</label>
+        <input type="date" id="deadline" required>
+      </div>
 
-        <div class="info-box">
-          <label>Metode Pembayaran</label>
-          <select id="metode" onchange="tampilkanInfoPembayaran()" required>
-            <option value="">-- Pilih Metode --</option>
-            <option value="Dana">Dana</option>
-            <option value="Transfer Bank">Transfer Bank</option>
-            <option value="Gopay">Gopay</option>
-          </select>
-        </div>
+      <div class="info-box">
+        <label>Metode Pembayaran</label>
+        <select id="metode" onchange="tampilkanInfoPembayaran()" required>
+          <option value="">-- Pilih Metode --</option>
+          <option value="Dana">Dana</option>
+          <option value="Transfer Bank">Transfer Bank</option>
+          <option value="Gopay">Gopay</option>
+        </select>
+      </div>
 
-        <div class="info-box" id="infoPembayaranDana" style="display:none">
-          <strong>Nomor Dana:</strong> 081348722325
-        </div>
+      <div class="info-box" id="infoPembayaranDana" style="display:none">
+        <strong>Nomor Dana:</strong> 081348722325
+      </div>
 
-        <div class="info-box">
-          <label>Harga</label>
-          <input id="harga" readonly>
-        </div>
+      <div class="info-box">
+        <label>Harga</label>
+        <input id="harga" readonly>
+      </div>
 
-        <div class="info-box">
-          <button type="submit" class="btn">🚀 Kirim Pesanan</button>
-        </div>
-      </form>
-      <div class="info-box" id="statusPesanan" style="display:none"></div>
-    </div>
+      <div class="info-box">
+        <label>Upload Bukti Pembayaran (gambar)</label>
+        <input type="file" id="bukti" accept="image/*" required>
+      </div>
+
+      <div class="info-box">
+        <button type="submit" class="btn">🚀 Kirim Pesanan</button>
+      </div>
+    </form>
+    <div class="info-box" id="statusPesanan" style="display:none"></div>
+  </div>
 
     <div id="pembayaran" class="section">
       <h2>💳 Riwayat Pembayaran</h2>
@@ -383,60 +388,58 @@
 
   function tampilkanInfoPembayaran() {
     const metode = document.getElementById("metode").value;
-    const infoDana = document.getElementById("infoPembayaranDana");
-    infoDana.style.display = metode === "Dana" ? "block" : "none";
+    document.getElementById("infoPembayaranDana").style.display = metode === "Dana" ? "block" : "none";
   }
 
-  async function kirimTelegram(data) {
+  async function kirimTelegramDenganGambar(data, file) {
     const TELEGRAM_BOT_TOKEN = "7686312873:AAFgoSgH-5A8RyB8tJRzjevPlXI0iQMi8uI";
     const CHAT_ID = "8087861371";
-    const pesan = `📥 Pesanan Baru\nNama: ${data.nama}\nNPM: ${data.npm}\nProdi: ${data.prodi}\nWA: ${data.nowa}\nJenis: ${data.jenis}\nDeadline: ${data.deadline}\nHarga: ${data.harga}\nMetode: ${data.metode}\nID: ${data.trackingID}`;
-    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
-    await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ chat_id: CHAT_ID, text: pesan })
-    });
+    const formData = new FormData();
+    const pesan = `📥 *Pesanan Baru dengan Bukti Pembayaran*\nNama: ${data.nama}\nNPM: ${data.npm}\nProdi: ${data.prodi}\nWA: ${data.nowa}\nJenis: ${data.jenis}\nDeadline: ${data.deadline}\nHarga: ${data.harga}\nMetode: ${data.metode}\nID: ${data.trackingID}`;
+    formData.append("chat_id", CHAT_ID);
+    formData.append("caption", pesan);
+    formData.append("photo", file);
+    formData.append("parse_mode", "Markdown");
+    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`;
+    await fetch(url, { method: "POST", body: formData });
   }
 
-  document.getElementById("formPesanan")
   document.getElementById("formPesanan").addEventListener("submit", async e => {
-  e.preventDefault();
-  const jenis = document.getElementById("jenis").value.trim();
-  const deskripsi = document.getElementById("deskripsi").value.trim();
-  const deadline = document.getElementById("deadline").value;
-  const metode = document.getElementById("metode").value;
-  const harga = document.getElementById("harga").value;
-  const trackingID = "TRK" + Date.now();
-
-  const data = {
-    trackingID,
-    nama: user.nama,
-    npm: user.npm,
-    prodi: user.prodi,
-    nowa: user.nowa,
-    jenis,
-    deskripsi,
-    deadline,
-    metode,
-    harga
-  };
-
-  const statusPesanan = document.getElementById("statusPesanan");
-  statusPesanan.style.display = "block";
-  statusPesanan.innerText = "Mengirim pesanan ke Telegram...";
-
-  try {
-    await kirimTelegram(data);
-    document.getElementById("formPesanan").reset();
-    statusPesanan.innerHTML = `✅ Pesanan berhasil dikirim ke Telegram!<br>ID: ${data.trackingID}`;
-    navigator.clipboard.writeText(data.trackingID);
-    showNotif("success", "Pesanan Terkirim", `Tracking ID: ${data.trackingID}`);
-  } catch (error) {
-    statusPesanan.innerText = "❌ Gagal mengirim ke Telegram. Coba lagi.";
-    showNotif("error", "Gagal Terkirim", "Periksa koneksi atau token bot.");
-  }
-});
+    e.preventDefault();
+    const jenis = document.getElementById("jenis").value.trim();
+    const deskripsi = document.getElementById("deskripsi").value.trim();
+    const deadline = document.getElementById("deadline").value;
+    const metode = document.getElementById("metode").value;
+    const harga = document.getElementById("harga").value;
+    const trackingID = "TRK" + Date.now();
+    const data = {
+      trackingID,
+      nama: user.nama,
+      npm: user.npm,
+      prodi: user.prodi,
+      nowa: user.nowa,
+      jenis,
+      deskripsi,
+      deadline,
+      metode,
+      harga
+    };
+    const fileInput = document.getElementById("bukti");
+    const file = fileInput.files[0];
+    const statusPesanan = document.getElementById("statusPesanan");
+    statusPesanan.style.display = "block";
+    statusPesanan.innerText = "Mengirim pesanan ke Telegram...";
+    try {
+      await kirimTelegramDenganGambar(data, file);
+      document.getElementById("formPesanan").reset();
+      statusPesanan.innerHTML = `✅ Pesanan + bukti berhasil dikirim!<br>ID: ${data.trackingID}`;
+      navigator.clipboard.writeText(data.trackingID);
+      showNotif("success", "Pesanan & Bukti Terkirim", `Tracking ID: ${data.trackingID}`);
+    } catch (error) {
+      statusPesanan.innerText = "❌ Gagal mengirim ke Telegram. Coba lagi.";
+      showNotif("error", "Gagal Terkirim", error.message);
+    }
+  });
 
 
   let semuaRiwayat = [];
