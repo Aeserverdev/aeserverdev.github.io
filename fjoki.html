@@ -473,46 +473,47 @@
   }
 
   async function kirimTelegramDenganGambar(data, file) {
-    const TELEGRAM_BOT_TOKEN = "7686312873:AAFgoSgH-5A8RyB8tJRzjevPlXI0iQMi8uI";
-    const CHAT_ID = "1002853719892";
+  const TELEGRAM_BOT_TOKEN = "7686312873:AAFgoSgH-5A8RyB8tJRzjevPlXI0iQMi8uI";
+  const CHAT_ID = "1002853719892";
 
-    if (!file || !file.type.startsWith("image/")) {
-      throw new Error("File tidak valid. Harus berupa gambar.");
-    }
-
-    const formData = new FormData();
-    const pesan = `
-    📥 *Pesanan Baru Masuk*
-    👤 Nama: *${data.nama}*
-    🎓 NPM: *${data.npm}*
-    🏫 Prodi: *${data.prodi}*
-    📱 WhatsApp: *${data.nowa}*
-    📝 Jenis Tugas: *${data.jenis}*
-    📄 Deskripsi: *${data.deskripsi}*
-    🗓 Deadline: *${data.deadline}*
-    👨‍🏫 Admin Joki: *${data.adminJoki}*
-    💳 Metode Pembayaran: *${data.metode}*
-    📱 Nomor Dana: *${data.dana}*
-    💰 Harga: *${data.harga}*
-    🆔 Tracking ID: *${data.trackingID}*
-    `.trim();
-
-    formData.append("chat_id", CHAT_ID);
-    formData.append("caption", pesan);
-    formData.append("photo", file);
-    formData.append("parse_mode", "Markdown");
-
-    const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`;
-    const response = await fetch(url, {
-      method: "POST",
-      body: formData
-    });
-
-    if (!response.ok) {
-      const errText = await response.text();
-      throw new Error(`Telegram Error: ${errText}`);
-    }
+  if (!file || !file.type.startsWith("image/")) {
+    throw new Error("File tidak valid. Harus berupa gambar.");
   }
+
+  const formData = new FormData();
+  const pesan = `
+📥 *Pesanan Baru Masuk*
+👤 Nama: *${data.nama}*
+🎓 NPM: *${data.npm}*
+🏫 Prodi: *${data.prodi}*
+📱 WhatsApp: *${data.nowa}*
+📝 Jenis Tugas: *${data.jenis}*
+📄 Deskripsi: *${data.deskripsi}*
+🗓 Deadline: *${data.deadline}*
+👨‍🏫 Admin Joki: *${data.adminJoki}*
+💳 Metode Pembayaran: *${data.metode}*
+📱 Nomor Dana: *${data.dana}*
+💰 Harga: *${data.harga}*
+🆔 Tracking ID: *${data.trackingID}*
+`.trim();
+
+  formData.append("chat_id", CHAT_ID);
+  formData.append("caption", pesan);
+  formData.append("photo", file);
+  formData.append("parse_mode", "Markdown");
+
+  const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendPhoto`;
+  const response = await fetch(url, {
+    method: "POST",
+    body: formData
+  });
+
+  if (!response.ok) {
+    const errText = await response.text();
+    throw new Error(`Telegram Error: ${errText}`);
+  }
+}
+
 
   document.getElementById("formPesanan").addEventListener("submit", async e => {
     e.preventDefault();
