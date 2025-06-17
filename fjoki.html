@@ -291,6 +291,17 @@ th {
 </select>
   </div>
 
+<div class="info-box">
+  <label>Pilih Admin Joki</label>
+  <select id="adminJoki" required>
+    <option value="">-- Pilih Admin Joki --</option>
+    <option value="RENALDI">RENALDI</option>
+    <option value="AFRIZAL">AFRIZAL</option>
+    <option value="ABDUL HAKIM">ABDUL HAKIM</option>
+    <option value="AIDIL ANWAR">AIDIL ANWAR</option>
+  </select>
+</div>
+
   <div class="info-box">
     <label>Deskripsi</label>
     <textarea id="deskripsi" required></textarea>
@@ -406,10 +417,11 @@ function updateHarga() {
 📝 Jenis Tugas: *${data.jenis}*
 📄 Deskripsi: *${data.deskripsi}*
 🗓 Deadline: *${data.deadline}*
+👨‍🏫 Admin Joki: *${data.adminJoki}*
 💳 Metode Pembayaran: *${data.metode}*
 💰 Harga: *${data.harga}*
 🆔 Tracking ID: *${data.trackingID}*
-    `.trim();
+`.trim();
 
     formData.append("chat_id", CHAT_ID);
     formData.append("caption", pesan);
@@ -432,6 +444,8 @@ function updateHarga() {
     e.preventDefault();
 
     const jenis = document.getElementById("jenis").value.trim();
+    const adminJoki = document.getElementById("adminJoki").value.
+trim();
     const deskripsi = document.getElementById("deskripsi").value.trim();
     const deadline = document.getElementById("deadline").value;
     const metode = document.getElementById("metode").value;
@@ -445,17 +459,18 @@ function updateHarga() {
     }
 
     const data = {
-      trackingID,
-      nama: user.nama,
-      npm: user.npm,
-      prodi: user.prodi,
-      nowa: user.nowa,
-      jenis,
-      deskripsi,
-      deadline,
-      metode,
-      harga
-    };
+  trackingID,
+  nama: user.nama,
+  npm: user.npm,
+  prodi: user.prodi,
+  nowa: user.nowa,
+  jenis,
+  deskripsi,
+  deadline,
+  metode,
+  harga,
+  adminJoki
+};
 
     const statusPesanan = document.getElementById("statusPesanan");
     statusPesanan.style.display = "block";
@@ -472,7 +487,6 @@ function updateHarga() {
       showNotif("error", "Gagal", error.message);
     }
   });
-  
   let semuaRiwayat = [];  
   async function loadRiwayat() {  
     const box = document.getElementById("tabelRiwayat");  
