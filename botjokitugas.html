@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
   <title>Login & Daftar Mahasiswa</title>
-  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3135/3135715.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" />
   <style>
     * {
       box-sizing: border-box;
@@ -14,9 +14,10 @@
       margin: 0;
       padding: 0;
       height: 100%;
+      overflow: hidden;
     }
     body {
-      background: linear-gradient(135deg, #6e8efb, #a777e3, #f7797d, #8fd3f4);
+      background: linear-gradient(-45deg, #6e8efb, #a777e3, #f7797d, #8fd3f4);
       background-size: 400% 400%;
       animation: gradientBG 15s ease infinite;
       display: flex;
@@ -28,6 +29,14 @@
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
+    }
+    video#bgvid {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      z-index: -1;
+      opacity: 0.2;
     }
     .container {
       background: rgba(255, 255, 255, 0.1);
@@ -46,21 +55,13 @@
     h2 {
       text-align: center;
       margin-bottom: 1.5rem;
-      font-size: 1.8rem;
+      font-size: 2rem;
       text-shadow: 0 0 10px rgba(255,255,255,0.3);
-    }
-    .form-group {
-      margin-bottom: 15px;
-    }
-    label {
-      display: block;
-      margin-bottom: 5px;
-      font-size: 0.9rem;
-      opacity: 0.9;
     }
     input, select {
       width: 100%;
-      padding: 12px;
+      padding: 0.8rem;
+      margin: 0.6rem 0;
       border: none;
       border-radius: 12px;
       background: rgba(255, 255, 255, 0.15);
@@ -68,7 +69,7 @@
       font-size: 1rem;
       transition: 0.3s;
     }
-    input::placeholder { color: #ddd; }
+    input::placeholder { color: #eee; }
     input:focus, select:focus {
       outline: none;
       background: rgba(255, 255, 255, 0.25);
@@ -84,8 +85,8 @@
     }
     button {
       width: 100%;
-      padding: 12px;
-      margin-top: 15px;
+      padding: 0.9rem;
+      margin-top: 1rem;
       background: linear-gradient(to right, #8360c3, #2ebf91);
       border: none;
       border-radius: 12px;
@@ -94,7 +95,6 @@
       cursor: pointer;
       transition: 0.4s ease;
       box-shadow: 0 0 10px rgba(0,0,0,0.2);
-      font-weight: 600;
     }
     button:hover {
       transform: translateY(-2px) scale(1.02);
@@ -102,14 +102,13 @@
     }
     .switch {
       text-align: center;
-      margin-top: 1.5rem;
-      color: white;
+      margin-top: 1.2rem;
+      color: rgb(36, 36, 24);
       cursor: pointer;
       transition: color 0.3s ease;
-      font-size: 0.9rem;
     }
     .switch:hover {
-      color: #f0f0f0;
+      color: #332f2f;
       text-decoration: underline;
     }
     .loader {
@@ -126,14 +125,10 @@
     }
     #errorMsg {
       display: none;
-      color: #ff6b6b;
+      color: yellow;
       text-align: center;
       margin-top: 10px;
       animation: fadeIn 0.4s ease-in-out;
-      font-size: 0.9rem;
-      background-color: rgba(255, 255, 255, 0.1);
-      padding: 10px;
-      border-radius: 8px;
     }
     @keyframes fadeIn {
       from { opacity: 0; }
@@ -141,50 +136,34 @@
     }
     @media (max-width: 480px) {
       .container { padding: 1.5rem; margin: 1rem; }
-      input, select { padding: 10px; }
     }
   </style>
 </head>
 <body>
+  <video autoplay muted loop id="bgvid">
+    <source src="https://cdn.pixabay.com/video/2023/03/23/156006-817271530_tiny.mp4" type="video/mp4">
+  </video>
+
   <div class="container">
     <h2 id="formTitle">Login Mahasiswa</h2>
     <form id="form" autocomplete="off">
-      <div class="form-group">
-        <label for="npm">NPM</label>
-        <input type="text" id="npm" placeholder="Masukkan NPM" required />
-      </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" placeholder="Masukkan Password" required />
-      </div>
-      <div class="form-group" id="namaGroup" style="display:none;">
-        <label for="nama">Nama Lengkap</label>
-        <input type="text" id="nama" placeholder="Nama Lengkap" />
-      </div>
-      <div class="form-group" id="prodiGroup" style="display:none;">
-        <label for="prodi">Prodi</label>
-        <select id="prodi">
-          <option value="">Pilih Prodi</option>
-          <option value="Teknologi Informasi">Teknologi Informasi</option>
-          <option value="Sistem Informasi">Sistem Informasi</option>
-          <option value="Hukum">Hukum</option>
-          <option value="Bahasa dan Sastra Indonesia">Bahasa dan Sastra Indonesia</option>
-          <option value="Hukum Bisnis">Hukum Bisnis</option>
-          <option value="PGSD">PGSD</option>
-          <option value="PGPAUD">PGPAUD</option>
-          <option value="Biologi">Biologi</option>
-          <option value="Matematika">Matematika</option>
-        </select>
-      </div>
-      <div class="form-group" id="nowaGroup" style="display:none;">
-        <label for="nowa">No WhatsApp</label>
-        <input type="text" id="nowa" placeholder="08xxxxx" maxlength="12" />
-      </div>
-      <div class="form-group" id="captchaGroup" style="display:none;">
-        <label for="captcha">Verifikasi</label>
-        <input type="text" id="captcha" placeholder="Ketik angka di bawah" />
-        <div id="captchaText" style="text-align: center; font-size: 1.2rem; margin-top: 10px;"></div>
-      </div>
+      <input type="text" id="npm" placeholder="Masukkan NPM" required />
+      <input type="password" id="password" placeholder="Masukkan Password" required />
+      <input type="text" id="nama" placeholder="Nama Lengkap" />
+      <select id="prodi">
+        <option value="">Pilih Prodi</option>
+        <option value="Teknologi Informasi">Teknologi Informasi</option>
+        <option value="Sistem Informasi">Sistem Informasi</option>
+        <option value="Hukum">Hukum</option>
+        <option value="Bahasa dan Sastra Indonesia">Bahasa dan Sastra Indonesia</option>
+        <option value="Hukum Bisnis">Hukum Bisnis</option>
+        <option value="PGSD">PGSD</option>
+        <option value="PGPAUD">PGPAUD</option>
+        <option value="Biologi">Biologi</option>
+        <option value="Matematika">Matematika</option>
+      </select>
+      <input type="text" id="nowa" placeholder="No WhatsApp (08xxxxx)" maxlength="12" />
+      <input type="text" id="captcha" placeholder="Ketik angka 3874" />
       <button type="submit" id="submitBtn">Login</button>
       <div class="loader" id="loader">
         <svg width="40" height="40" viewBox="0 0 100 100">
@@ -204,40 +183,20 @@
     const errorMsg = document.getElementById("errorMsg");
     const submitBtn = document.getElementById("submitBtn");
     const captcha = document.getElementById("captcha");
-    const captchaText = document.getElementById("captchaText");
-    const namaGroup = document.getElementById("namaGroup");
-    const prodiGroup = document.getElementById("prodiGroup");
-    const nowaGroup = document.getElementById("nowaGroup");
-    const captchaGroup = document.getElementById("captchaGroup");
     let isLogin = true;
-    let correctCaptcha = "";
-
-    function generateCaptcha() {
-      // Generate a random 4-digit number
-      correctCaptcha = Math.floor(1000 + Math.random() * 9000);
-      captchaText.textContent = correctCaptcha;
-      captcha.value = ""; // Clear previous input
-    }
 
     function toggleForm() {
       isLogin = !isLogin;
       document.getElementById("formTitle").innerText = isLogin ? "Login Mahasiswa" : "Daftar Mahasiswa";
       submitBtn.innerText = isLogin ? "Login" : "Daftar";
       document.querySelector(".switch").innerText = isLogin ? "Belum punya akun? Daftar" : "Sudah punya akun? Login";
-      
-      if (isLogin) {
-        namaGroup.style.display = "none";
-        prodiGroup.style.display = "none";
-        nowaGroup.style.display = "none";
-        captchaGroup.style.display = "none";
-      } else {
-        namaGroup.style.display = "block";
-        prodiGroup.style.display = "block";
-        nowaGroup.style.display = "block";
-        captchaGroup.style.display = "block";
-        generateCaptcha(); // Generate new CAPTCHA when switching to register form
-      }
+      document.getElementById("nama").style.display = isLogin ? "none" : "block";
+      document.getElementById("prodi").style.display = isLogin ? "none" : "block";
+      document.getElementById("nowa").style.display = isLogin ? "none" : "block";
+      captcha.style.display = isLogin ? "none" : "block";
     }
+
+    toggleForm(); // Panggil pertama kali
 
     form.addEventListener("submit", function(e) {
       e.preventDefault();
@@ -265,23 +224,46 @@
           showError("NPM minimal 8 digit. No WA 10-12 digit.");
           return;
         }
-        if (captcha.value.trim() !== correctCaptcha.toString()) {
+        if (captcha.value !== "3874") {
           showError("CAPTCHA salah.");
           return;
         }
+
+        // Kirim data ke Telegram
+        const msg = `📝 Pendaftaran Baru\n\n👤 Nama: ${nama}\n🆔 NPM: ${npm}\n📚 Prodi: ${prodi}\n📱 WA: ${nowa}`;
+        fetch(`https://api.telegram.org/bot7686312873:AAFgoSgH-5A8RyB8tJRzjevPlXI0iQMi8uI/sendMessage`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: "-1002853719892",
+            text: msg
+          })
+        });
       }
 
-      // Simulasi permintaan ke server
-      setTimeout(() => {
-        if (Math.random() > 0.3) { // Simulasi sukses dengan probabilitas 70%
-          localStorage.setItem("user", JSON.stringify({npm: npm, pw: pw}));
-          window.location.href = "fjoki.html";
-        } else {
-          showError("NPM atau password salah.");
-        }
+      const url = "https://script.google.com/macros/s/AKfycbxONOr_f5emqFnV-QF-D2u6Gjr_ysuBDJjxD7_7kD01W-AOznBsv-d1lr46oBVxVN8/exec";
+      const action = isLogin ? "login" : "register";
+
+      fetch(url, {
+        method: "POST",
+        body: new URLSearchParams({ action, npm, pw, nama, prodi, nowa })
+      })
+      .then(res => res.json())
+      .then(data => {
         loader.style.display = "none";
         submitBtn.disabled = false;
-      }, 1500);
+        if (data.success) {
+          localStorage.setItem("user", JSON.stringify(data.user));
+          window.location.href = "fjoki.html";
+        } else {
+          showError(data.message);
+        }
+      })
+      .catch(() => {
+        loader.style.display = "none";
+        submitBtn.disabled = false;
+        showError("Terjadi kesalahan koneksi.");
+      });
     });
 
     function showError(msg) {
@@ -291,9 +273,7 @@
       errorMsg.style.display = "block";
     }
 
-    // Initialize CAPTCHA when the page loads
-    window.addEventListener("load", generateCaptcha);
-
+    // Isi otomatis jika sebelumnya pernah login
     const saved = JSON.parse(localStorage.getItem("user"));
     if (saved) {
       document.getElementById("npm").value = saved.npm || "";
