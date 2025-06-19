@@ -390,7 +390,7 @@
 
       <div class="info-box">
   <label>Deskripsi</label>
-  <textarea id="deskripsi" required></textarea>
+  <textarea id="deskripsi" placeholder="Penjelasan tentang tugas yang akan di buat" required></textarea>
 </div>
 
 <div class="info-box">
@@ -403,8 +403,13 @@
   <input type="text" id="fakultas" placeholder="Contoh: Fakultas Ilmu Komputer" required>
 </div>
 
+<div class="info-box">
+  <label>Mata Kuliah</label>
+  <input type="text" id="matkul" placeholder="Contoh: Pemrograman Web" required>
+</div>
+
       <div class="info-box">
-        <label>Deadline</label>
+        <label>Deadline wajib lewat dari 1 Hari</label>
         <input type="date" id="deadline" required>
       </div>
 
@@ -501,6 +506,7 @@
     📄 Deskripsi: *${data.deskripsi}*
     👨‍🏫 Dosen Pengampu: *${data.dosen}*
     📚 Fakultas: *${data.fakultas}*
+    📘 Mata Kuliah: *${data.matkul}*
     🗓 Deadline: *${data.deadline}*
     👨‍🏫 Admin Joki: *${data.adminJoki}*
     💳 Metode Pembayaran: *${data.metode}*
@@ -553,6 +559,7 @@
     const deskripsi = document.getElementById("deskripsi").value.trim();
     const dosen = document.getElementById("dosen").value.trim();
     const fakultas = document.getElementById("fakultas").value.trim();
+    const matkul = document.getElementById("matkul").value.trim();
     const deadline = document.getElementById("deadline").value;
     const metode = document.getElementById("metode").value;
     const harga = document.getElementById("harga").value;
@@ -574,6 +581,7 @@
   deskripsi,
   dosen,
   fakultas,
+  matkul,
   deadline,
   metode,
   harga,
