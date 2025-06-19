@@ -389,9 +389,19 @@
       </div>
 
       <div class="info-box">
-        <label>Deskripsi</label>
-        <textarea id="deskripsi" required></textarea>
-      </div>
+  <label>Deskripsi</label>
+  <textarea id="deskripsi" required></textarea>
+</div>
+
+<div class="info-box">
+  <label>Nama Lengkap Dosen</label>
+  <input type="text" id="dosen" placeholder="Contoh: Dr. Bambang S.Kom., M.T." required>
+</div>
+
+<div class="info-box">
+  <label>Fakultas</label>
+  <input type="text" id="fakultas" placeholder="Contoh: Fakultas Ilmu Komputer" required>
+</div>
 
       <div class="info-box">
         <label>Deadline</label>
@@ -489,6 +499,8 @@
     📱 WhatsApp: *${data.nowa}*
     📝 Jenis Tugas: *${data.jenis}*
     📄 Deskripsi: *${data.deskripsi}*
+    👨‍🏫 Dosen Pengampu: *${data.dosen}*
+    📚 Fakultas: *${data.fakultas}*
     🗓 Deadline: *${data.deadline}*
     👨‍🏫 Admin Joki: *${data.adminJoki}*
     💳 Metode Pembayaran: *${data.metode}*
@@ -539,6 +551,8 @@
     const jenis = document.getElementById("jenis").value.trim();
     const adminJoki = document.getElementById("adminJoki").value.trim();
     const deskripsi = document.getElementById("deskripsi").value.trim();
+    const dosen = document.getElementById("dosen").value.trim();
+    const fakultas = document.getElementById("fakultas").value.trim();
     const deadline = document.getElementById("deadline").value;
     const metode = document.getElementById("metode").value;
     const harga = document.getElementById("harga").value;
@@ -551,19 +565,21 @@
     }
 
     const data = {
-      trackingID,
-      nama: user.nama,
-      npm: user.npm,
-      prodi: user.prodi,
-      nowa: user.nowa,
-      jenis,
-      deskripsi,
-      deadline,
-      metode,
-      harga,
-      adminJoki,
-      dana: nomorDanaMap[adminJoki] || "-"
-    };
+  trackingID,
+  nama: user.nama,
+  npm: user.npm,
+  prodi: user.prodi,
+  nowa: user.nowa,
+  jenis,
+  deskripsi,
+  dosen,
+  fakultas,
+  deadline,
+  metode,
+  harga,
+  adminJoki,
+  dana: nomorDanaMap[adminJoki] || "-"
+};
 
     const statusPesanan = document.getElementById("statusPesanan");
     statusPesanan.style.display = "block";
